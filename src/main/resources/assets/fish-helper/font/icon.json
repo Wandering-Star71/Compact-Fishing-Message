@@ -1,0 +1,48 @@
+{
+  "providers": [
+    {
+      "type": "bitmap",
+      "file": "fish-helper:font/trash_common.png",
+      "chars": [
+        ""
+      ],
+      "ascent": 8,
+      "height": 8
+    },
+    {
+      "type": "bitmap",
+      "file": "fish-helper:font/pearl_polished.png",
+      "ascent": 8,
+      "height": 8,
+      "chars": [""]
+    },
+    {
+      "type": "bitmap",
+      "file": "fish-helper:font/anglr_treasure_epic.png",
+      "ascent": 8,
+      "height": 8,
+      "chars": [""]
+    },
+    {
+      "type": "bitmap",
+      "file": "fish-helper:font/spirit_refined_strong.png",
+      "ascent": 8,
+      "height": 8,
+      "chars": [""]
+    },
+    {
+      "type": "bitmap",
+      "file": "fish-helper:font/lime_sole.png",
+      "ascent": 8,
+      "height": 8,
+      "chars": [""]
+    },
+    {
+      "type": "bitmap",
+      "file": "fish-helper:font/lemon_sole.png",
+      "ascent": 8,
+      "height": 8,
+      "chars": [""]
+    }
+  ]
+}

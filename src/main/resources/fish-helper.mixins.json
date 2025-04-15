@@ -1,0 +1,13 @@
+{
+	"required": true,
+	"package": "starship.fishhelper.mixin",
+	"compatibilityLevel": "JAVA_21",
+	"mixins": [
+		"MixinChatListener",
+		"MixinChatHudAccessor",
+		"MixinChatHud"
+	],
+	"injectors": {
+		"defaultRequire": 1
+	}
+}
