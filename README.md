@@ -1,5 +1,5 @@
 More compact fishing messages for Minecraft server MCC Island.
-
+Please use newest version(1.0.1)!
 ## Feature:
 - Removes all trigger text and XP message, retains the icon after the caught message.
 - Assigns unique icons to different categories of fishing items, differs normal fish and elusive fish.
