@@ -1,27 +1,27 @@
-package starship.fishhelper.fishmessage;
+package starship.fishhelper.fishMessage;
 
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.hud.ChatHud;
 import net.minecraft.client.gui.hud.ChatHudLine;
 import net.minecraft.text.*;
-import net.minecraft.util.Formatting;
-import net.minecraft.util.Identifier;
 import net.minecraft.util.Util;
 import starship.fishhelper.MCCIFishHelper;
 import net.minecraft.network.message.MessageType;
 import com.mojang.authlib.GameProfile;
 import net.minecraft.network.message.SignedMessage;
 import starship.fishhelper.mixin.MixinChatHudAccessor;
+import starship.fishhelper.modMenu.ConfigData;
 import java.time.Instant;
 import java.util.*;
 import java.util.regex.*;
 
+import static java.lang.Math.min;
+
 
 public class FishMessage {
     private static FishMessage instance;
-    private final MCCIFishHelper fishHelper;
     private static MinecraftClient client;
-    private static ChatHud chatHud;
+
     private List<ChatHudLine.Visible> chatVisibleMessages;
     private List<ChatHudLine> chatMessages;
 
@@ -38,9 +38,9 @@ public class FishMessage {
             "Elusive Catch", "Supply Preserve"
     );
     private String chatHistoryFishMessage = "";
+    private boolean ifMatch = false;
 
-    public FishMessage(MCCIFishHelper fishhelper) {
-        this.fishHelper = fishhelper;
+    public FishMessage(MCCIFishHelper fishHelper) {
         FishMessage.instance = this;
         MCCIFishHelper.logger.info("Fishmessage class created");
     }
@@ -50,50 +50,46 @@ public class FishMessage {
     }
 
     public void tick(MinecraftClient client) {
-        if(client.player != null && client.world != null){
+        if (client.player != null && client.world != null) {
 
             FishMessage.client = client;
-            chatHud = FishMessage.client.inGameHud.getChatHud();
+            ChatHud chatHud = FishMessage.client.inGameHud.getChatHud();
             chatVisibleMessages = ((MixinChatHudAccessor) chatHud).getVisibleMessages();
             chatMessages = ((MixinChatHudAccessor) chatHud).getMessages();
-//            client.player.sendMessage(Text.of("isActive: "+session.isActive
-//                                                    +" catchTime: "+session.catchTime
-//                                                    +" vm size: "+chatVisibleMessages.size()
-//                                                    +" m size: "+chatMessages.size()), true);
+//            client.player.sendMessage(Text.of("isActive: "+ FishHelperConfig.getInstance().enableOverlay), true);
 //            MCCIFishHelper.logger.info("caught chat message: {}", session.caughtMessage);
         }
     }
 
 
-    public Text sendChatMsg(Text text) {
-        if(ifDebug) return text;
-        if(client.player == null || client.world == null) return text;
+    public Text sendGameMsg(Text text) {
+//        if (ifDebug) return text;
+        if (!ConfigData.getInstance().enableCompactFishmsg) return text;
+        if (client.player == null || client.world == null) return text;
+        if (!ifMatch) return text;
         String tx = text.getString();
-        if(session.isActive) {
-//            if(session.isLast) return text;
-            MutableText t = session.caughtMessage.copy();
-            String msg = t.getString();
-//            MutableText ts = Text.literal("tets");
-//            if (session.isLast) session.reset();
-            return t;
-        }
-        else
+        if (session.isActive) {
+            return session.caughtMessage.copy();
+        } else
             return text;
 
     }
 
     public boolean shouldChatMsgCancel(Text text) {
-        if(ifDebug) return false;
-        if(client.player == null || client.world == null) return false;
-
+//        if (ifDebug) return false;
+        if (!ConfigData.getInstance().enableCompactFishmsg) return false;
+        if (client.player == null || client.world == null) return false;
+        ifMatch = false;
         String msg = text.getString();
 
         Matcher caughtMatcher = CAUGHT_PATTERN.matcher(msg);
         Matcher triggerMatcher = TRIGGER_PATTERN.matcher(msg);
         Matcher earnedMatcher = XP_PATTERN.matcher(msg);
-        if (session.isActive && (Util.getMeasuringTimeMs() - session.catchTime) > 1000*3) session.reset();
+
+//        if (session.isActive && (Util.getMeasuringTimeMs() - session.catchTime) > 1000*3) session.reset();
 
         if (caughtMatcher.find() && !session.isActive) {
+            ifMatch = true;
             session.isActive = true;
 
             session.catchTime = Util.getMeasuringTimeMs();
@@ -110,18 +106,23 @@ public class FishMessage {
         }
 
         if (triggerMatcher.find() && session.isActive) {
+            ifMatch = true;
             Text icon = extractTriggerIcon(text);
             if (chatVisibleMessages == null || chatMessages == null) return true;
-            for (int i = 0; i < Math.min(5, chatVisibleMessages.size()); i++) {
+            for (int i = 0; i < min(3, chatMessages.size()); i++) {
                 if (chatMessages.get(i).content().getString().contains(session.caughtMessage.getString())) {
                     session.caughtMessage.append(Text.literal(" ")).append(icon);
-//                    ChatHudLine newLine = new ChatHudLine(chatMessages.get(i).creationTick(),
-//                                                        session.caughtMessage,
-//                                                        chatMessages.get(i).signature(),
-//                                                        chatMessages.get(i).indicator());
-                    chatVisibleMessages.remove(i);
                     chatMessages.remove(i);
-//                    ((MixinChatHudAccessor) chatHud).invokeAddVisibleMessage(newLine);
+                    if (!chatVisibleMessages.get(i).endOfEntry())
+                        for (int j = i + 1; j < min(chatMessages.size()-i-1, 10); j++) {
+                            if (chatVisibleMessages.get(j).endOfEntry()){
+                                chatVisibleMessages.remove(j);
+                                break;
+                            }
+                        }
+//                        chatVisibleMessages.remove(i+1);
+                    else
+                        chatVisibleMessages.remove(i);
                     break;
                 }
             }
@@ -130,6 +131,7 @@ public class FishMessage {
         }
 
         if (earnedMatcher.find() && session.isActive) {
+            ifMatch = true;
             session.isLast = true;
             session.xpGained = Integer.parseInt(earnedMatcher.group(1).trim());
             session.reset();
@@ -139,7 +141,8 @@ public class FishMessage {
     }
 
     public boolean shouldHistoryChatCancel(Text text) { // false = no change
-        if(ifDebug) return false;
+//        if (ifDebug) return false;
+        if (!ConfigData.getInstance().enableCompactFishmsg) return false;
         if (chatVisibleMessages != null || chatMessages != null) return false;
 //        MCCIFishHelper.logger.info("it did run here!");
         String plain = text.getString();
@@ -147,7 +150,7 @@ public class FishMessage {
         Pattern pattern = Pattern.compile(".*?(\\(.*?\\) You caught: .+)");
         Matcher matcher = pattern.matcher(plain);
         if (matcher.find()) {
-            String x = matcher.group(1);
+//            String x = matcher.group(1);
             if (Objects.equals(chatHistoryFishMessage, ""))
                 chatHistoryFishMessage = matcher.group(1);
             else // the second or third time fishmsg shows
@@ -182,14 +185,14 @@ public class FishMessage {
             String str1 = msg1.getString();
             if (!str1.contains(""))
                 root.append(msg1);
-            else{
+            else {
                 MutableText root1 = Text.empty();
                 for (Text msg2 : msg1.getSiblings()) {
                     String str2 = msg2.getString();
 
                     if (!str2.contains("")) root1.append(msg2);
                     else {
-                        if (str2.equals("")){
+                        if (str2.equals("")) {
                             ifFound = true;
                             root1.append(FontFactory.getCategory(session.catType));
 //                            break;
@@ -205,57 +208,6 @@ public class FishMessage {
                                 root2.append(msg3);
                             else {
                                 root2.append(FontFactory.getCategory(session.catType));
-                            }
-                        }
-                        String root2str = root2.getString();
-//                        root1.append(FontFactory.getCategory(FontFactory.CategoryType.JUNK));
-                        root1.append(root2);
-                    }
-                }
-                String root1str = root1.getString();
-                root.append(root1);
-            }
-
-        }
-        return root;
-    }
-
-    public MutableText _extractCaughtMessage(Text fullText) {
-        String msg = fullText.getString();
-
-        boolean ifFound = false;
-        MutableText root = Text.empty();
-        for (Text msg1 : fullText.getSiblings()) {
-            String str1 = msg1.getString();
-            if (!str1.contains(""))
-                root.append(msg1);
-            else{
-                MutableText root1 = Text.empty();
-                for (Text msg2 : msg1.getSiblings()) {
-                    String str2 = msg2.getString();
-
-                    if (!str2.contains("")) root1.append(msg2);
-                    else {
-                        if (str2.equals("")){
-                            ifFound = true;
-                            root1.append(Text.literal("(").setStyle(Style.EMPTY.withColor(0x23D106)))
-                                .append(Text.literal("").setStyle(Style.EMPTY.withColor(Formatting.WHITE).withFont(
-                                        Identifier.of("fish-helper", "icon"))));
-//                            break;
-                        }
-                        if (ifFound) {
-                            root1.append(Text.literal(") You caught:").setStyle(Style.EMPTY.withColor(0x23D106)));
-                            break;
-                        }
-                        MutableText root2 = Text.empty();
-                        for (Text msg3 : msg2.getSiblings()) {
-                            String str3 = msg3.getString();
-                            if (!str3.equals(""))
-                                root2.append(msg3);
-                            else {
-                                root2.append(Text.literal("("))
-                                .append(Text.literal("").setStyle(Style.EMPTY.withColor(Formatting.WHITE).withFont(
-                                    Identifier.of("fish-helper", "icon"))));
                             }
                         }
                         String root2str = root2.getString();

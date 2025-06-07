@@ -1,4 +1,4 @@
-package starship.fishhelper.fishmessage;
+package starship.fishhelper.fishMessage;
 
 import net.minecraft.text.Text;
 import net.minecraft.text.Style;

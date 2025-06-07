@@ -17,7 +17,8 @@
 	"entrypoints": {
 		"client": [
 			"starship.fishhelper.MCCIFishHelper"
-		]
+		],
+		"modmenu": [ "starship.fishhelper.modMenu.ModMenu" ]
 	},
 	"mixins": [
 		"fish-helper.mixins.json"
@@ -26,9 +27,17 @@
 		"fabricloader": ">=0.16.10",
 		"minecraft": "~1.21.4",
 		"java": ">=21",
-		"fabric-api": "*"
+		"fabric-api": "*",
+		"cloth-config": "*"
 	},
 	"suggests": {
 		"another-mod": "*"
+	},
+
+	"custom": {
+		"modmenu": {
+			"badges": [],
+			"update_checker": true
+		}
 	}
 }

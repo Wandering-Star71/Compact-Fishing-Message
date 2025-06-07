@@ -1,14 +1,9 @@
-package starship.fishhelper.fishmessage;
+package starship.fishhelper.fishMessage;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
-import com.mojang.serialization.Codec;
 import net.minecraft.text.*;
-import net.minecraft.util.Formatting;
-import org.jetbrains.annotations.Nullable;
-import starship.fishhelper.MCCIFishHelper;
 import starship.fishhelper.itemCategory.*;
 
 public class FishSession {
