@@ -50,8 +50,7 @@ public class FishMessage {
     }
 
     public void tick(MinecraftClient client) {
-        if (client.player != null && client.world != null) {
-
+        if (client != null && client.player != null && client.world != null) {
             FishMessage.client = client;
             ChatHud chatHud = FishMessage.client.inGameHud.getChatHud();
             chatVisibleMessages = ((MixinChatHudAccessor) chatHud).getVisibleMessages();
@@ -61,11 +60,10 @@ public class FishMessage {
         }
     }
 
-
     public Text sendGameMsg(Text text) {
 //        if (ifDebug) return text;
         if (!ConfigData.getInstance().enableCompactFishmsg) return text;
-        if (client.player == null || client.world == null) return text;
+        if (client == null || client.player == null || client.world == null) return text;
         if (!ifMatch) return text;
         String tx = text.getString();
         if (session.isActive) {
@@ -78,7 +76,7 @@ public class FishMessage {
     public boolean shouldChatMsgCancel(Text text) {
 //        if (ifDebug) return false;
         if (!ConfigData.getInstance().enableCompactFishmsg) return false;
-        if (client.player == null || client.world == null) return false;
+        if (client == null || client.player == null || client.world == null) return false;
         ifMatch = false;
         String msg = text.getString();
 
