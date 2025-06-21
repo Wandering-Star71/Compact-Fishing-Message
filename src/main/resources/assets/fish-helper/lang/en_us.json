@@ -1,7 +1,4 @@
 {
-  "title.fishhelper.config": "FishHelper Settings",
-  "category.fishhelper.general": "General Settings",
-  "option.fishhelper.auto_fish": "Enable Auto Fishing",
-  "option.fishhelper.sound_alert": "Enable Sound Alert",
+  "title.fishhelper.config": "Compact Fishing Messages Settings",
   "option.fishhelper.compact_fishmsg": "Enable Compact Fishing Message"
 }
