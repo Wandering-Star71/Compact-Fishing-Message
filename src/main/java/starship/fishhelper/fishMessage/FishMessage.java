@@ -84,7 +84,7 @@ public class FishMessage {
         Matcher triggerMatcher = TRIGGER_PATTERN.matcher(msg);
         Matcher earnedMatcher = XP_PATTERN.matcher(msg);
 
-//        if (session.isActive && (Util.getMeasuringTimeMs() - session.catchTime) > 1000*3) session.reset();
+        if (session.isActive && (Util.getMeasuringTimeMs() - session.catchTime) > 1000*3) session.reset();
 
         if (caughtMatcher.find() && !session.isActive) {
             ifMatch = true;
