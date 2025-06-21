@@ -113,19 +113,18 @@ public class FishMessage {
                     session.caughtMessage.append(Text.literal(" ")).append(icon);
                     chatMessages.remove(i);
                     if (!chatVisibleMessages.get(i).endOfEntry())
-                        for (int j = i + 1; j < min(chatVisibleMessages.size()-i+1, 10); j++) {
+                        for (int j = i + 1; j < min(chatVisibleMessages.size(), 10); j++) {
                             if (chatVisibleMessages.get(j).endOfEntry()){
                                 chatVisibleMessages.remove(j);
                                 break;
                             }
                         }
-//                        chatVisibleMessages.remove(i+1);
                     else {
                         chatVisibleMessages.remove(i);
                         if (i < chatVisibleMessages.size() && !chatVisibleMessages.get(i).endOfEntry())
                             chatVisibleMessages.remove(i); // if some1's chat box is too thin, making msg 2 line
+                        break;
                     }
-                    break;
                 }
             }
 
