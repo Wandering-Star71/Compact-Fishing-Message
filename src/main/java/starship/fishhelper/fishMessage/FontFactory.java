@@ -13,14 +13,6 @@ import java.util.Map;
 public class FontFactory {
     private static final Map<String, Text> TRIGGER_TEXTS = new HashMap<>();
     private static final Map<String, Text> CATEGORY_TEXTS = new HashMap<>();
-    public enum CategoryType {
-        JUNK,
-        NORMAL_FISH,
-        ELUSIVE_FISH,
-        PEARL,
-        TREASURE,
-        SPIRIT
-    }
 
     static {
         registerTrigger("Speedy Rod");
@@ -135,7 +127,7 @@ public class FontFactory {
                                             .append(" the amount."))
                     )
             ));
-            case "Pearl Magnet" -> finalText = Text.literal("").append(Text.literal("").append(
+            case "Pearl Magnet" -> Text.literal("").append(Text.literal("").append(
                     Text.literal("").setStyle(Style.EMPTY.withColor(Formatting.WHITE).withFont(
                             Identifier.of("mcc", "icon"))
                     ))).setStyle(Style.EMPTY.withHoverEvent(
@@ -229,12 +221,21 @@ public class FontFactory {
         CATEGORY_TEXTS.put(category.name(), text);
     }
 
-
     public static Text get(String name) {
         return TRIGGER_TEXTS.get(name);
     }
+
     public static Text getCategory(CategoryType category) {
         return CATEGORY_TEXTS.get(category.name());
+    }
+
+    public enum CategoryType {
+        JUNK,
+        NORMAL_FISH,
+        ELUSIVE_FISH,
+        PEARL,
+        TREASURE,
+        SPIRIT
     }
 
 }

@@ -42,7 +42,7 @@ public class FishMessage {
 
     public FishMessage(MCCIFishHelper fishHelper) {
         FishMessage.instance = this;
-        MCCIFishHelper.logger.info("Fishmessage class created");
+        MCCIFishHelper.logger.info("FishMessage class created");
     }
 
     public static FishMessage getInstance() {
@@ -108,7 +108,7 @@ public class FishMessage {
             ifMatch = true;
             Text icon = extractTriggerIcon(text);
             if (chatVisibleMessages == null || chatMessages == null) return true;
-            for (int i = 0; i < min(3, chatMessages.size()); i++) {
+            for (int i = 0; i < min(5, chatMessages.size()); i++) {
                 if (chatMessages.get(i).content().getString().contains(session.caughtMessage.getString())) {
                     session.caughtMessage.append(Text.literal(" ")).append(icon);
                     chatMessages.remove(i);
@@ -123,8 +123,8 @@ public class FishMessage {
                         chatVisibleMessages.remove(i);
                         if (i < chatVisibleMessages.size() && !chatVisibleMessages.get(i).endOfEntry())
                             chatVisibleMessages.remove(i); // if some1's chat box is too thin, making msg 2 line
-                        break;
                     }
+                    break;
                 }
             }
 

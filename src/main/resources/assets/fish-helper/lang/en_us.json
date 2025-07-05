@@ -1,4 +1,6 @@
 {
   "title.fishhelper.config": "Compact Fishing Messages Settings",
-  "option.fishhelper.compact_fishmsg": "Enable Compact Fishing Message"
+  "option.fishhelper.compact_fishmsg": "Enable Compact Fishing Caught Message",
+  "option.fishhelper.trevor_opener": "Enable Receiving Treasure Messages"
+
 }

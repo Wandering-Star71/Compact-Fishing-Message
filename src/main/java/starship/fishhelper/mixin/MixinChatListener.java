@@ -11,7 +11,7 @@ import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import starship.fishhelper.fishMessage.FishMessage;
 import net.minecraft.text.Text;
-
+import starship.fishhelper.trevorOpener.TrevorOpener;
 
 @Mixin(MessageHandler.class)
 public abstract class MixinChatListener {
@@ -24,6 +24,9 @@ public abstract class MixinChatListener {
         if (FishMessage.getInstance().shouldChatMsgCancel(message)) {
             ci.cancel();
         }
+        if (TrevorOpener.getInstance().shouldChatMsgCancelled(message)) {
+            ci.cancel();
+        }
     }
     @ModifyVariable(
             method = "onGameMessage",
@@ -33,8 +36,4 @@ public abstract class MixinChatListener {
     private Text modifyGameMessage(Text original) {
         return FishMessage.getInstance().sendGameMsg(original);
     }
-
-
-
-
 }

@@ -9,8 +9,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 public class ConfigData {
-    public boolean enableAutoFish = true;
-    public boolean enableSoundAlert = false;
+    public boolean enableTreasureReciMsg = false;
     public boolean enableCompactFishmsg = true;
 
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
@@ -52,8 +51,7 @@ public class ConfigData {
     }
 
     public void updateFrom(ConfigData newData) {
-        this.enableAutoFish = newData.enableAutoFish;
-        this.enableSoundAlert = newData.enableSoundAlert;
+        this.enableTreasureReciMsg = newData.enableTreasureReciMsg;
         this.enableCompactFishmsg = newData.enableCompactFishmsg;
     }
 }

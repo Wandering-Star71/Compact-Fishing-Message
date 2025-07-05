@@ -25,6 +25,11 @@ public class ConfigScreen {
                 .setSaveConsumer(newValue -> config.enableCompactFishmsg = newValue)
                 .build());
 
+        category.addEntry(entryBuilder.startBooleanToggle(Text.translatable("option.fishhelper.trevor_opener"), config.enableTreasureReciMsg)
+                .setDefaultValue(false)
+                .setSaveConsumer(newValue -> config.enableTreasureReciMsg = newValue)
+                .build());
+
         builder.setSavingRunnable(fishHelper::saveConfig);
 
         return builder.build();
