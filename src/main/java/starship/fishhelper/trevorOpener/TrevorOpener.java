@@ -77,7 +77,7 @@ public class TrevorOpener {
 
     public boolean shouldChatMsgCancelled(Text text) {
         if (eventState == EventState.INACTIVE) return false;
-        if (!ifReceivedMsgAfterOpen) return false;
+        if (!ifReceivedMsgAfterOpen && !ConfigData.getInstance().enableTreasureReciMsg) return false;
 
         Matcher matcher = RECIEVE_PATTERN.matcher(text.getString());
         if (!matcher.find()) return false;
