@@ -28,9 +28,9 @@ public class FishMessage {
     private final boolean ifDebug = false;
 
     private final FishSession session = new FishSession();
-    private static final Pattern CAUGHT_PATTERN = Pattern.compile("\\(\uE138\\) You caught: \\[(.+?)](?: x(\\d+))?\\s*$");
-    private static final Pattern TRIGGER_PATTERN = Pattern.compile("\uE012 (Triggered|Special): (.+?)");
-    private static final Pattern XP_PATTERN = Pattern.compile("\uE012 You earned: (\\d+) Island XP");
+    private static final Pattern CAUGHT_PATTERN = Pattern.compile("\\(\uE156\\) You caught: \\[(.+?)](?: x(\\d+))?\\s*$");
+    private static final Pattern TRIGGER_PATTERN = Pattern.compile("\uE018 (Triggered|Special): (.+?)");
+    private static final Pattern XP_PATTERN = Pattern.compile("\uE018 You earned: (\\d+) Island XP");
 
     private static final Set<String> KNOWN_TRIGGER_NAMES = Set.of(
             "Speedy Rod", "Boosted Rod", "Graceful Rod", "Stable Rod", "Glitched Rod",
@@ -168,9 +168,6 @@ public class FishMessage {
 
     public Text extractTriggerIcon(Text fullText) {
         String plain = fullText.getString();
-        if (!plain.contains("\uE012")) {
-            return null;
-        }
 
         Optional<String> matchedName = KNOWN_TRIGGER_NAMES.stream().filter(plain::contains).findFirst();
 
@@ -184,16 +181,16 @@ public class FishMessage {
         MutableText root = Text.empty();
         for (Text msg1 : fullText.getSiblings()) {
             String str1 = msg1.getString();
-            if (!str1.contains(""))
+            if (!str1.contains("\uE156"))
                 root.append(msg1);
             else {
                 MutableText root1 = Text.empty();
                 for (Text msg2 : msg1.getSiblings()) {
                     String str2 = msg2.getString();
 
-                    if (!str2.contains("")) root1.append(msg2);
+                    if (!str2.contains("\uE156")) root1.append(msg2);
                     else {
-                        if (str2.equals("")) {
+                        if (str2.equals("\uE156")) {
                             ifFound = true;
                             root1.append(FontFactory.getCategory(session.catType));
 //                            break;
@@ -205,7 +202,7 @@ public class FishMessage {
                         MutableText root2 = Text.empty();
                         for (Text msg3 : msg2.getSiblings()) {
                             String str3 = msg3.getString();
-                            if (!str3.equals(""))
+                            if (!str3.equals("\uE156"))
                                 root2.append(msg3);
                             else {
                                 root2.append(FontFactory.getCategory(session.catType));

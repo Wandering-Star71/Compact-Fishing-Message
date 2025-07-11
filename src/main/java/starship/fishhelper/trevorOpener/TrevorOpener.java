@@ -20,7 +20,7 @@ public class TrevorOpener {
     private final Augment augment;
     private final Cosmetic cosmetic;
 
-    private static final Pattern RECIEVE_PATTERN = Pattern.compile(".*\\(\uE138\\) You receive: \\[(.+?)](?: x(\\d+))?\\s*$");
+    private static final Pattern RECIEVE_PATTERN = Pattern.compile(".*\\(\uE156\\) You receive: \\[(.+?)](?: x(\\d+))?\\s*$");
     public enum EventState {
         ACTIVE, INACTIVE
     }
@@ -113,7 +113,9 @@ public class TrevorOpener {
         if (client == null || client.world == null || client.player == null) return;
         if (eventState == EventState.INACTIVE) {
             client.player.sendMessage(Text.literal("TreasureOpen event created.")
-                    .formatted(Formatting.DARK_GREEN).formatted(Formatting.BOLD), false);
+                    .formatted(Formatting.DARK_GREEN).formatted(Formatting.BOLD)
+                    .append(Text.literal(" Now open some treasures!").formatted(Formatting.DARK_GREEN)), false);
+
             this.resetEvent();
             eventState = EventState.ACTIVE;
         }

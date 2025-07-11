@@ -19,26 +19,26 @@ public class Augment extends Recorder {
 
     );
     private static final Map<String, String> ICON_MAP = new LinkedHashMap<>() {{
-        put("Strong Hook Augment", ""); // from mcci pack
-        put("XP Magnet Augment", "");
-        put("Boosted Rod Augment", "");
-        put("Strong Pot Augment", "");
-        put("Wise Hook Augment", "");
-        put("Fish Magnet Augment", "");
-        put("Speedy Rod Augment", "");
-        put("Wise Pot Augment", "");
-        put("Glimmering Hook Augment", "");
-        put("Pearl Magnet Augment", "");
-        put("Graceful Rod Augment", "");
-        put("Glimmering Pot Augment", "");
-        put("Greedy Hook Augment", "");
-        put("Treasure Magnet Augment", "");
-        put("Glitched Rod Augment", "");
-        put("Greedy Pot Augment", "");
-        put("Lucky Hook Augment", "");
-        put("Spirit Magnet Augment", "");
-        put("Stable Rod Augment", "");
-        put("Lucky Pot Augment", "");
+        put("Strong Hook Augment", "\uE10A"); // from mcci pack
+        put("XP Magnet Augment", "\uE111");
+        put("Boosted Rod Augment", "\uE0F6");
+        put("Strong Pot Augment", "\uE10B");
+        put("Wise Hook Augment", "\uE10F");
+        put("Fish Magnet Augment", "\uE0F9");
+        put("Speedy Rod Augment", "\uE106");
+        put("Wise Pot Augment", "\uE110");
+        put("Glimmering Hook Augment", "\uE0FB");
+        put("Pearl Magnet Augment", "\uE105");
+        put("Graceful Rod Augment", "\uE0FE");
+        put("Glimmering Pot Augment", "\uE0FC");
+        put("Greedy Hook Augment", "\uE100");
+        put("Treasure Magnet Augment", "\uE10D");
+        put("Glitched Rod Augment", "\uE0FD");
+        put("Greedy Pot Augment", "\uE101");
+        put("Lucky Hook Augment", "\uE103");
+        put("Spirit Magnet Augment", "\uE107");
+        put("Stable Rod Augment", "\uE108");
+        put("Lucky Pot Augment", "\uE104");
     }};
 
     @Override
