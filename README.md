@@ -13,5 +13,5 @@ More compact fishing messages for Minecraft server MCC Island.
 - The mod's options can be adjusted in the configuration panel provided by ModMenu.
 - The names of elusive fish are manually typed. If I’ve missed any, please also let me know.
 
-If you encounter any bugs with this mod or have suggestions, please let me know <3 by submitting issue.
+If you encounter any bugs with this mod or have suggestions, please let me know by submitting issue.
 
