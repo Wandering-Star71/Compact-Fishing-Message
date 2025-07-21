@@ -24,7 +24,7 @@ public abstract class MixinChatListener {
         if (FishMessage.getInstance().shouldChatMsgCancel(message)) {
             ci.cancel();
         }
-        if (TrevorOpener.getInstance().shouldChatMsgCancelled(message)) {
+        if (TrevorOpener.getInstance().shouldChatMsgCancel(message)) {
             ci.cancel();
         }
     }

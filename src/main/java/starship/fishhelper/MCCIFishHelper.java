@@ -6,6 +6,9 @@ import net.fabricmc.fabric.api.client.screen.v1.ScreenEvents;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandManager;
 import net.minecraft.client.gui.screen.ingame.GenericContainerScreen;
 import net.minecraft.screen.GenericContainerScreenHandler;
+import net.minecraft.text.Style;
+import net.minecraft.text.Text;
+import net.minecraft.util.Identifier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
@@ -14,6 +17,9 @@ import net.minecraft.client.MinecraftClient;
 import starship.fishhelper.fishMessage.FishMessage;
 import starship.fishhelper.modMenu.ConfigData;
 import starship.fishhelper.trevorOpener.TrevorOpener;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class MCCIFishHelper implements ClientModInitializer {
     public static final String MOD_ID = "compact-fish-msg";
@@ -77,6 +83,12 @@ public class MCCIFishHelper implements ClientModInitializer {
                     }))
             );
         });
+
+//        ClientTickEvents.END_CLIENT_TICK.register(client -> {
+//            if (client.player != null && client.player.age == 20) {
+//                test();
+//            }
+//        });
     }
 
     public void tick(MinecraftClient client) {

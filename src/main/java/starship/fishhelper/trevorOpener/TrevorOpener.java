@@ -20,7 +20,9 @@ public class TrevorOpener {
     private final Augment augment;
     private final Cosmetic cosmetic;
 
-    private static final Pattern RECIEVE_PATTERN = Pattern.compile(".*\\(\uE156\\) You receive: \\[(.+?)](?: x(\\d+))?\\s*$");
+    private static final Pattern RECIEVE_PATTERN = Pattern.compile(
+            ".*\\(\uE156\\) You receive: \\[(.+?)](?: x(\\d{1,3}(?:,\\d{3})*))?\\s*$"
+    );
     public enum EventState {
         ACTIVE, INACTIVE
     }
@@ -75,7 +77,7 @@ public class TrevorOpener {
         }
     }
 
-    public boolean shouldChatMsgCancelled(Text text) {
+    public boolean shouldChatMsgCancel(Text text) {
         if (eventState == EventState.INACTIVE) return false;
         if (!ifReceivedMsgAfterOpen && !ConfigData.getInstance().enableTreasureReciMsg) return false;
 
@@ -83,38 +85,33 @@ public class TrevorOpener {
         if (!matcher.find()) return false;
         String name = matcher.group(1).trim();
         String countStr = matcher.group(2);
-        int count = (countStr != null) ? Integer.parseInt(countStr) : 1;
+        int count = (countStr != null) ? Integer.parseInt(countStr.replace(",", "")) : 1;
 
         if (baitLine.namePattern.matcher(name).find()) {
             baitLine.record(name, count);
-            return !ConfigData.getInstance().enableTreasureReciMsg;
         }
-        if (augment.namePattern.matcher(name).find()) {
+        else if (augment.namePattern.matcher(name).find()) {
             augment.record(name, count);
-            return !ConfigData.getInstance().enableTreasureReciMsg;
         }
-        if (tech.namePattern.matcher(name).find()) {
+        else if (tech.namePattern.matcher(name).find()) {
             tech.record(name, count);
-            return !ConfigData.getInstance().enableTreasureReciMsg;
         }
-        if (lure.namePattern.matcher(name).find()) {
+        else if (lure.namePattern.matcher(name).find()) {
             lure.record(name, count);
-            return !ConfigData.getInstance().enableTreasureReciMsg;
         }
-        if (cosmetic.namePattern.matcher(name).find()) {
+        else if (cosmetic.namePattern.matcher(name).find()) {
             cosmetic.record(name, count);
-            return !ConfigData.getInstance().enableTreasureReciMsg;
         }
-
-        return false;
+        else
+            return false;
+        return !ConfigData.getInstance().enableTreasureReciMsg;
     }
 
     public void eventStart() {
         if (client == null || client.world == null || client.player == null) return;
         if (eventState == EventState.INACTIVE) {
             client.player.sendMessage(Text.literal("TreasureOpen event created.")
-                    .formatted(Formatting.DARK_GREEN).formatted(Formatting.BOLD)
-                    .append(Text.literal(" Now open some treasures!").formatted(Formatting.DARK_GREEN)), false);
+                    .formatted(Formatting.DARK_GREEN).formatted(Formatting.BOLD), false);
 
             this.resetEvent();
             eventState = EventState.ACTIVE;
