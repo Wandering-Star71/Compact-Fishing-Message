@@ -70,7 +70,7 @@ public class MCCIFishHelper implements ClientModInitializer {
     public void tick(MinecraftClient client) {
         this.fishmessage.tick(client);
         this.trevoropener.tick(client);
-
+// test git
     }
 
     public void loadConfig() {
