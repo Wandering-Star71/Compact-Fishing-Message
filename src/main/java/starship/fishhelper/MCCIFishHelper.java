@@ -2,12 +2,15 @@ package starship.fishhelper;
 
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
+import net.fabricmc.fabric.api.client.rendering.v1.HudLayerRegistrationCallback;
+import net.fabricmc.fabric.api.client.rendering.v1.IdentifiedLayer;
 import net.fabricmc.fabric.api.client.screen.v1.ScreenEvents;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandManager;
 import net.minecraft.client.gui.screen.ingame.GenericContainerScreen;
 import net.minecraft.screen.GenericContainerScreenHandler;
 import net.minecraft.text.Style;
 import net.minecraft.text.Text;
+import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -84,11 +87,37 @@ public class MCCIFishHelper implements ClientModInitializer {
             );
         });
 
-//        ClientTickEvents.END_CLIENT_TICK.register(client -> {
-//            if (client.player != null && client.player.age == 20) {
-//                test();
-//            }
-//        });
+        HudLayerRegistrationCallback.EVENT.register(layeredDrawer -> {
+            layeredDrawer.attachLayerAfter(
+                    IdentifiedLayer.MISC_OVERLAYS,
+                    Identifier.of("fish-helper", "fish-record-layer"),
+                    (drawContext, tickCounter) -> {
+                        this.fishmessage.recordOverlay.render(drawContext);
+                    }
+            );
+        });
+
+        ClientTickEvents.END_CLIENT_TICK.register(client -> {
+            if (!ConfigData.getInstance().didInfoShowOnce && client.player != null && client.player.age == 20) {
+                ConfigData.getInstance().didInfoShowOnce = true;
+                saveConfig();
+                Text text = Text.empty()
+                        .append(Text.literal("\uE109").setStyle(
+                                Style.EMPTY.withColor(Formatting.WHITE).withFont(Identifier.of("fish-helper", "icon"))
+                        ))
+                        .append(Text.literal(" Hi! Thanks for using MCCI Compact Fishing Messages!")
+                                .setStyle(Style.EMPTY.withColor(0xCAD0E8)))
+                        .append(Text.literal(" (This message will only show up once.) ")
+                                .setStyle(Style.EMPTY.withColor(0xD8D8D8).withItalic(true)))
+                        .append(Text.literal("\n All settings can be customized via Mod Menu. ")
+                                .setStyle(Style.EMPTY.withColor(0xA9BBC9).withBold(true)))
+                        .append(Text.literal("\n Although—what is it called—this mod did more than just " +
+                                        "compact messages, and will (hopefully) update more in the future... Enjoy!")
+                                .setStyle(Style.EMPTY.withColor(0xCAD0E8)));
+
+                client.player.sendMessage(text, false);
+            }
+        });
     }
 
     public void tick(MinecraftClient client) {

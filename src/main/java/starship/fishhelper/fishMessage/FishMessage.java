@@ -28,6 +28,7 @@ public class FishMessage {
     private final boolean ifDebug = false;
 
     private final FishSession session = new FishSession();
+    public final RecordOverlay recordOverlay = new RecordOverlay();
     private static final Pattern CAUGHT_PATTERN = Pattern.compile("\\(\uE156\\) You caught: \\[(.+?)](?: x(\\d+))?\\s*$");
     private static final Pattern TRIGGER_PATTERN = Pattern.compile("\uE018 (Triggered|Special): (.+?)");
     private static final Pattern XP_PATTERN = Pattern.compile("\uE018 You earned: (\\d+) Island XP");
@@ -57,6 +58,7 @@ public class FishMessage {
             chatMessages = ((MixinChatHudAccessor) chatHud).getMessages();
 //            client.player.sendMessage(Text.of("isActive: "+ FishHelperConfig.getInstance().enableOverlay), true);
 //            MCCIFishHelper.logger.info("caught chat message: {}", session.caughtMessage);
+            this.recordOverlay.tick(client);
         }
     }
 
@@ -135,6 +137,7 @@ public class FishMessage {
             ifMatch = true;
             session.isLast = true;
             session.xpGained = Integer.parseInt(earnedMatcher.group(1).trim());
+            recordOverlay.record(session.catType, session.xpGained);
             session.reset();
             return true;
         }
