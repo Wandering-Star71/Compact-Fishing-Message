@@ -35,6 +35,7 @@ public class BaitLine extends Recorder {
     protected Set<String> getNames() {
         return NAMES;
     }
+
     @Override
     public Text summary() {
         MutableText root = Text.literal("  ");
@@ -45,7 +46,7 @@ public class BaitLine extends Recorder {
             if (record.get(name) == 0) continue;
             root.append(Text.literal(icon).setStyle(Style.EMPTY.withColor(Formatting.WHITE).withFont(
                     Identifier.of("fish-helper", "icon"))));
-            root.append(Text.literal(" x"+count+"  ").formatted(Formatting.GRAY));
+            root.append(Text.literal(" x" + count + "  ").formatted(Formatting.GRAY));
             if (name.contains("Common Bait") && record.values().stream().allMatch(v -> v != 0))
                 root.append(Text.literal("\n  "));
         }

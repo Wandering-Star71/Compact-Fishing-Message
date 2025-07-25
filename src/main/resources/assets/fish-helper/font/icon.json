@@ -257,30 +257,105 @@
       "ascent": 8,
       "height": 8,
       "chars": ["\uE06B"]
-    },{
+    },
+    {
       "type": "bitmap",
       "file": "fish-helper:font/tech/anglr_stock_replenisher.png",
       "ascent": 8,
       "height": 8,
       "chars": ["\uE06C"]
-    },{
+    },
+    {
       "type": "bitmap",
       "file": "fish-helper:font/tech/anglr_lure_battery.png",
       "ascent": 8,
       "height": 8,
       "chars": ["\uE06D"]
-    },{
+    },
+    {
       "type": "bitmap",
       "file": "fish-helper:font/tech/anglr_pure_beacon.png",
       "ascent": 8,
       "height": 8,
       "chars": ["\uE06E"]
-    },{
+    },
+    {
       "type": "bitmap",
       "file": "fish-helper:font/tech/anglr_auto_rod.png",
       "ascent": 8,
       "height": 8,
       "chars": ["\uE06F"]
+    },
+
+    {
+      "type": "bitmap",
+      "file": "fish-helper:font/render/time.png",
+      "ascent": 8,
+      "height": 8,
+      "chars": ["\uE100"]
+    },
+    {
+      "type": "bitmap",
+      "file": "fish-helper:font/render/reelin.png",
+      "ascent": 8,
+      "height": 8,
+      "chars": ["\uE101"]
+    },
+    {
+      "type": "bitmap",
+      "file": "fish-helper:font/render/xp2.png",
+      "ascent": 8,
+      "height": 8,
+      "chars": ["\uE102"]
+    },
+    {
+      "type": "bitmap",
+      "file": "fish-helper:font/render/junk.png",
+      "ascent": 8,
+      "height": 8,
+      "chars": ["\uE10A"]
+    },
+    {
+      "type": "bitmap",
+      "file": "fish-helper:font/render/normalfish.png",
+      "ascent": 8,
+      "height": 8,
+      "chars": ["\uE104"]
+    },
+    {
+      "type": "bitmap",
+      "file": "fish-helper:font/render/elusivefish.png",
+      "ascent": 8,
+      "height": 8,
+      "chars": ["\uE105"]
+    },
+    {
+      "type": "bitmap",
+      "file": "fish-helper:font/render/pearl.png",
+      "ascent": 8,
+      "height": 8,
+      "chars": ["\uE106"]
+    },
+    {
+      "type": "bitmap",
+      "file": "fish-helper:font/render/treasure.png",
+      "ascent": 8,
+      "height": 8,
+      "chars": ["\uE107"]
+    },
+    {
+      "type": "bitmap",
+      "file": "fish-helper:font/render/spirit.png",
+      "ascent": 8,
+      "height": 8,
+      "chars": ["\uE108"]
+    },
+    {
+      "type": "bitmap",
+      "file": "fish-helper:font/render/info.png",
+      "ascent": 8,
+      "height": 8,
+      "chars": ["\uE109"]
     }
   ]
 }

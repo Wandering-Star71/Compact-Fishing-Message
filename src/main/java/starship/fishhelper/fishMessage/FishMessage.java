@@ -11,6 +11,7 @@ import com.mojang.authlib.GameProfile;
 import net.minecraft.network.message.SignedMessage;
 import starship.fishhelper.mixin.MixinChatHudAccessor;
 import starship.fishhelper.modMenu.ConfigData;
+
 import java.time.Instant;
 import java.util.*;
 import java.util.regex.*;
@@ -19,24 +20,21 @@ import static java.lang.Math.min;
 
 
 public class FishMessage {
-    private static FishMessage instance;
-    private static MinecraftClient client;
-
-    private List<ChatHudLine.Visible> chatVisibleMessages;
-    private List<ChatHudLine> chatMessages;
-
-    private final boolean ifDebug = false;
-
-    private final FishSession session = new FishSession();
     private static final Pattern CAUGHT_PATTERN = Pattern.compile("\\(\uE156\\) You caught: \\[(.+?)](?: x(\\d+))?\\s*$");
     private static final Pattern TRIGGER_PATTERN = Pattern.compile("\uE018 (Triggered|Special): (.+?)");
     private static final Pattern XP_PATTERN = Pattern.compile("\uE018 You earned: (\\d+) Island XP");
-
     private static final Set<String> KNOWN_TRIGGER_NAMES = Set.of(
             "Speedy Rod", "Boosted Rod", "Graceful Rod", "Stable Rod", "Glitched Rod",
             "XP Magnet", "Fish Magnet", "Pearl Magnet", "Treasure Magnet", "Spirit Magnet",
             "Elusive Catch", "Supply Preserve"
     );
+    private static FishMessage instance;
+    private static MinecraftClient client;
+    private final boolean ifDebug = false;
+    public final RecordOverlay recordOverlay = new RecordOverlay();
+    private final FishSession session = new FishSession();
+    private List<ChatHudLine.Visible> chatVisibleMessages;
+    private List<ChatHudLine> chatMessages;
     private String chatHistoryFishMessage = "";
     private boolean ifMatch = false;
 
@@ -51,13 +49,11 @@ public class FishMessage {
 
     public void tick(MinecraftClient client) {
         if (client != null && client.player != null && client.world != null) {
-
             FishMessage.client = client;
             ChatHud chatHud = FishMessage.client.inGameHud.getChatHud();
             chatVisibleMessages = ((MixinChatHudAccessor) chatHud).getVisibleMessages();
             chatMessages = ((MixinChatHudAccessor) chatHud).getMessages();
-//            client.player.sendMessage(Text.of("isActive: "+ FishHelperConfig.getInstance().enableOverlay), true);
-//            MCCIFishHelper.logger.info("caught chat message: {}", session.caughtMessage);
+            this.recordOverlay.tick(client);
         }
     }
 
@@ -116,7 +112,7 @@ public class FishMessage {
                     chatMessages.remove(i);
                     if (!chatVisibleMessages.get(i).endOfEntry())
                         for (int j = i + 1; j < min(chatVisibleMessages.size(), 10); j++) {
-                            if (chatVisibleMessages.get(j).endOfEntry()){
+                            if (chatVisibleMessages.get(j).endOfEntry()) {
                                 chatVisibleMessages.remove(j);
                                 break;
                             }
@@ -138,6 +134,7 @@ public class FishMessage {
             ifMatch = true;
             session.isLast = true;
             session.xpGained = Integer.parseInt(earnedMatcher.group(1).trim());
+            recordOverlay.record(session.catType, session.xpGained);
             session.reset();
             return true;
         }
@@ -161,11 +158,9 @@ public class FishMessage {
                 if (matcher.group(1).contains(chatHistoryFishMessage) || matcher.group(1).equals(chatHistoryFishMessage)) {
 //                    MCCIFishHelper.logger.info("it shoudld be canceled!");
                     return true;
-                }
-                else // new history msg
+                } else // new history msg
                     chatHistoryFishMessage = matcher.group(1);
-        }
-        else chatHistoryFishMessage = "";
+        } else chatHistoryFishMessage = "";
         return false;
     }
 

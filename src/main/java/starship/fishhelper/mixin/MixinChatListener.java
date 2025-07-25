@@ -18,8 +18,9 @@ import starship.fishhelper.trevorOpener.TrevorOpener;
 public abstract class MixinChatListener {
     @Inject(method = "onChatMessage", at = @At("HEAD"))
     private void cacheChatData(SignedMessage message, GameProfile sender,
-                               MessageType.Parameters params, CallbackInfo ci){
+                               MessageType.Parameters params, CallbackInfo ci) {
     }
+
     @Inject(method = "onGameMessage", at = @At("HEAD"), cancellable = true)
     private void maybeCancelMessage(Text message, boolean overlay, CallbackInfo ci) {
         if (FishMessage.getInstance().shouldChatMsgCancel(message)) {
@@ -29,6 +30,7 @@ public abstract class MixinChatListener {
             ci.cancel();
         }
     }
+
     @ModifyVariable(
             method = "onGameMessage",
             at = @At("HEAD"),
@@ -37,8 +39,6 @@ public abstract class MixinChatListener {
     private Text modifyGameMessage(Text original) {
         return FishMessage.getInstance().sendGameMsg(original);
     }
-
-
 
 
 }

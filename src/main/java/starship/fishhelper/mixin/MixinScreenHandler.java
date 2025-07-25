@@ -19,12 +19,13 @@ public abstract class MixinScreenHandler {
         if (player.getWorld().isClient) {
 //            MCCIFishHelper.logger.info("[DEBUG] Slot Clicked: slotId={}, button={}, action={}", slotId, button, actionType);
             if (slotId >= 0 && slotId < 100) { // click inside gui // 48 49 50
-                if (TrevorOpener.getInstance().ifSUMMAEYScreenOpened && ( slotId == 48 || slotId == 49 || slotId == 50))
+                if (TrevorOpener.getInstance().ifSUMMAEYScreenOpened && (slotId == 48 || slotId == 49 || slotId == 50))
                     TrevorOpener.getInstance().detectScreenSUMMARYClose();
-                Slot slot = ((ScreenHandler)(Object)this).getSlot(slotId);
+                Slot slot = ((ScreenHandler) (Object) this).getSlot(slotId);
                 ItemStack itemStack = slot.getStack();
                 if (itemStack.isEmpty()) return;
-                if (!TrevorOpener.getInstance().treasure.namePattern.matcher(itemStack.getName().getString()).find()) return;
+                if (!TrevorOpener.getInstance().treasure.namePattern.matcher(itemStack.getName().getString()).find())
+                    return;
 
                 if (actionType == SlotActionType.QUICK_MOVE && button == 0) { // left+shift click
 //                    MCCIFishHelper.logger.info(">> Shift + Left Click detected on slot: {}, {}", itemStack.getName().getString(), itemStack.getCount());

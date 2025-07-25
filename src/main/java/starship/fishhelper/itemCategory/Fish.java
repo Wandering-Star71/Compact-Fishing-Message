@@ -29,13 +29,11 @@ public class Fish {
             "Mesa flounder", "Painted discus", "Scorpionfish", "Solar mackerel", "Sunburnt goby", "Sunburnt surgeonfish");
 
 
-
     public static final Set<String> coral_shores_elusive = Set.of(
             "Coral Angelfish", "Coral Beauty", "Gorgonian Grouper", "Mahi Mahi", "Pearlescent Gourami", "Staghorn Flounder");
     public static final Set<String> coral_shores_normal = Set.of(
             "Banggai cardinalfish", "Braincoral betta", "Disco discus", "Hammerhead haddock", "Midnight mbunas", "Neon tetra",
             "Ocean sunfish", "Rainbow kribensis", "Reef anchovy", "Serpae tetra", "Sugarload pufferfish", "Tropical baracuda");
-
 
 
 //    public static final Set<String> crab_collection = Set.of("anemone crab", "ashen spidercrab", "blazing crab", "boulder crab", "boxer crab", "bubble crab", "celestial crab", "cinder crab", "claw crab", "cluster crab", "coal crab", "coconut crab", "coral crab", "cremini crab", "cursed crab", "fairy crab", "floaty crab", "floral crab", "ghostly crab", "grave crab", "horseshoe crab", "mosaic crab", "mossy crab", "mud crab", "oilspill crab", "orange crab", "peekytoe crab", "pineapple crab", "prismarine crab", "queen crab", "runic crab", "sandking crab", "sandy crab", "scarab crab", "scorpion crab", "shimmer crab", "spiney crab", "spore crab", "spotted crab", "thorny crab", "twisted spidercrab", "vampire crab");
@@ -87,7 +85,6 @@ public class Fish {
     public static final Set<String> twisted_swamp_normal = Set.of(
             "Autumn sprat", "Barred knifejaw", "Gloom mullet", "Gloopy goldfish", "Mimifry", "Mud minnow",
             "Ocean moonfish", "Snake mackerel", "Tiny mudskipper", "Twisted fangtooth", "Twisted koi", "Twisted sturgeon");
-
 
 
     public static final Set<String> verdant_woods_elusive = Set.of(

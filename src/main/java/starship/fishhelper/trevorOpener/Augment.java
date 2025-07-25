@@ -1,4 +1,5 @@
 package starship.fishhelper.trevorOpener;
+
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Style;
 import net.minecraft.text.Text;
@@ -45,6 +46,7 @@ public class Augment extends Recorder {
     protected Set<String> getNames() {
         return NAMES;
     }
+
     @Override
     public Text summary() {
         MutableText root = Text.literal("  ");
@@ -55,7 +57,7 @@ public class Augment extends Recorder {
             if (record.get(name) == 0) continue;
             root.append(Text.literal(icon).setStyle(Style.EMPTY.withColor(Formatting.WHITE).withFont(
                     Identifier.of("mcc", "icon"))));
-            root.append(Text.literal(" x"+count+"  ").formatted(Formatting.GRAY));
+            root.append(Text.literal(" x" + count + "  ").formatted(Formatting.GRAY));
             if ((name.contains("Strong Pot Augment") || name.contains("Wise Pot Augment")
                     || name.contains("Glimmering Pot Augment") || name.contains("Greedy Pot Augment"))
                     && record.values().stream().allMatch(v -> v != 0))

@@ -13,14 +13,6 @@ import java.util.Map;
 public class FontFactory {
     private static final Map<String, Text> TRIGGER_TEXTS = new HashMap<>();
     private static final Map<String, Text> CATEGORY_TEXTS = new HashMap<>();
-    public enum CategoryType {
-        JUNK,
-        NORMAL_FISH,
-        ELUSIVE_FISH,
-        PEARL,
-        TREASURE,
-        SPIRIT
-    }
 
     static {
         // 添加所有 Perk 及对应 Text
@@ -230,12 +222,21 @@ public class FontFactory {
         CATEGORY_TEXTS.put(category.name(), text);
     }
 
-
     public static Text get(String name) {
         return TRIGGER_TEXTS.get(name);
     }
+
     public static Text getCategory(CategoryType category) {
         return CATEGORY_TEXTS.get(category.name());
+    }
+
+    public enum CategoryType {
+        JUNK,
+        NORMAL_FISH,
+        ELUSIVE_FISH,
+        PEARL,
+        TREASURE,
+        SPIRIT
     }
 
 }
