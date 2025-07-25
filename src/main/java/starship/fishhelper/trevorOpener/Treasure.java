@@ -1,4 +1,5 @@
 package starship.fishhelper.trevorOpener;
+
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Style;
 import net.minecraft.text.Text;
@@ -29,7 +30,6 @@ public class Treasure extends Recorder {
     }};
 
 
-
     @Override
     protected Set<String> getNames() {
         return NAMES;
@@ -46,7 +46,7 @@ public class Treasure extends Recorder {
             if (record.get(name) == 0) continue;
             root.append(Text.literal(icon).setStyle(Style.EMPTY.withColor(Formatting.WHITE).withFont(
                     Identifier.of("fish-helper", "icon"))));
-            root.append(Text.literal("x"+count+"  "));
+            root.append(Text.literal("x" + count + "  "));
         }
         return root;
     }

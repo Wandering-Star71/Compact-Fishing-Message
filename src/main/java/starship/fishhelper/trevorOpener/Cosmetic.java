@@ -1,12 +1,9 @@
 package starship.fishhelper.trevorOpener;
 
 import net.minecraft.text.MutableText;
-import net.minecraft.text.Style;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
-import net.minecraft.util.Identifier;
 
-import java.util.Map;
 import java.util.Set;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -71,7 +68,6 @@ public class Cosmetic extends Recorder {
         }
         if (LEGENDARY_NAMES.contains(name)) {
             record.put("Legendary", record.get("Legendary") + count);
-            return;
         }
     }
 
@@ -80,16 +76,16 @@ public class Cosmetic extends Recorder {
         MutableText root = Text.literal("  ");
         if (record.get("Legendary") != 0)
             root.append(Text.literal("Legendary").formatted(Formatting.GOLD))
-                    .append(Text.literal(" x"+record.get("Legendary")+"     ").formatted(Formatting.GRAY));
+                    .append(Text.literal(" x" + record.get("Legendary") + "     ").formatted(Formatting.GRAY));
         if (record.get("Epic") != 0)
             root.append(Text.literal("Epic").formatted(Formatting.DARK_PURPLE))
-                    .append(Text.literal(" x"+record.get("Epic")+"     ").formatted(Formatting.GRAY));
+                    .append(Text.literal(" x" + record.get("Epic") + "     ").formatted(Formatting.GRAY));
         if (record.get("Rare") != 0)
             root.append(Text.literal("Rare").formatted(Formatting.BLUE))
-                    .append(Text.literal(" x"+record.get("Rare")+"     ").formatted(Formatting.GRAY));
+                    .append(Text.literal(" x" + record.get("Rare") + "     ").formatted(Formatting.GRAY));
         if (record.get("Uncommon") != 0)
             root.append(Text.literal("Uncommon").formatted(Formatting.GREEN))
-                    .append(Text.literal(" x"+record.get("Uncommon")).formatted(Formatting.GRAY));
+                    .append(Text.literal(" x" + record.get("Uncommon")).formatted(Formatting.GRAY));
         return root;
     }
 }

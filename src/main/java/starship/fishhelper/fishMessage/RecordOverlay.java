@@ -21,12 +21,12 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class RecordOverlay {
-    private static MinecraftClient client;
     private static final Pattern MCCI_TITLE_PATTERN = Pattern.compile("MCCI: (.+)");
     private static final Set<String> ISLAND_NAMES = Set.of(
             "VERDANT WOODS", "FLORAL FOREST", "DARK GROVE", "SUNKEN SWAMP",
             "TROPICAL OVERGROWTH", "CORAL SHORES", "TWISTED SWAMP", "MIRRORED OASIS",
             "ANCIENT SANDS", "BLAZING CANYON", "ASHEN WASTES", "VOLCANIC SPRINGS");
+    private static MinecraftClient client;
     private boolean ifInFishingIsland = false;
     private int tickCounter = 0;
     private int linboTickCounter = 0;
@@ -70,7 +70,7 @@ public class RecordOverlay {
         int totalHeight = (int) ((lineHeight + 1) * renderEntries.size());
 
         matrices.pop();
-        drawContext.fill(x, y, x + (int)(maxWidth * scale), y + (int)(totalHeight * scale), backgroundColor);
+        drawContext.fill(x, y, x + (int) (maxWidth * scale), y + (int) (totalHeight * scale), backgroundColor);
         matrices.push();
         matrices.translate(x, y, 0);
         matrices.scale(scale, scale, 1.0f);
@@ -87,8 +87,7 @@ public class RecordOverlay {
                         Identifier.of("fish-helper", "icon")));
                 drawContext.drawText(textRenderer, iconText, 4, lineY, textColor, false);
                 drawContext.drawText(textRenderer, line, 15, lineY, textColor, false);
-            }
-            else
+            } else
                 drawContext.drawText(textRenderer, line, 4, lineY, textColor, false);
 
         }
@@ -123,20 +122,16 @@ public class RecordOverlay {
                 if (matcher.find()) {
                     String islandName = matcher.group(1);
                     ifInFishingIsland = ISLAND_NAMES.contains(islandName);
-                }
-                else {
+                } else {
                     if (linboTickCounter >= 20 * 30) {
                         ifInFishingIsland = false;
-                    }
-                    else
+                    } else
                         linboTickCounter++;
                 }
-            }
-            else {
+            } else {
                 if (linboTickCounter >= 20 * 30) {
                     ifInFishingIsland = false;
-                }
-                else
+                } else
                     linboTickCounter++;
             }
 

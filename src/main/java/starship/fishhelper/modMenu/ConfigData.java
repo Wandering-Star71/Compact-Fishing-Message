@@ -9,9 +9,11 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 public class ConfigData {
+    private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
+    private static final File CONFIG_FILE = new File("config/fishhelper.json");
+    private static ConfigData instance = new ConfigData();
     public boolean enableTreasureReciMsg = false;
     public boolean enableCompactFishmsg = true;
-
     public boolean enableFishRecordOverlay = true;
     public int fishRecordRenderTextX = 10;
     public int fishRecordRenderTextY = 10;
@@ -19,13 +21,7 @@ public class ConfigData {
     public int fishRecordBackgroundAlphaColor = 0x88;
     public int fishRecordTextRGBColor = 0xFFFFFF;
     public boolean fishRecordIconShows = true;
-
     public boolean didInfoShowOnce = false;
-
-    private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
-    private static final File CONFIG_FILE = new File("config/fishhelper.json");
-
-    private static ConfigData instance = new ConfigData();
 
     public static ConfigData getInstance() {
         return instance;
