@@ -89,11 +89,11 @@ public class MCCIFishHelper implements ClientModInitializer {
 
         HudLayerRegistrationCallback.EVENT.register(layeredDrawer -> {
             layeredDrawer.attachLayerAfter(
-                    IdentifiedLayer.MISC_OVERLAYS,
-                    Identifier.of("fish-helper", "fish-record-layer"),
-                    (drawContext, tickCounter) -> {
-                        this.fishmessage.recordOverlay.render(drawContext);
-                    }
+                IdentifiedLayer.MISC_OVERLAYS,
+                Identifier.of("fish-helper", "fish-record-layer"),
+                (drawContext, tickCounter) -> {
+                    this.fishmessage.recordOverlay.render(drawContext);
+                }
             );
         });
 
@@ -102,18 +102,18 @@ public class MCCIFishHelper implements ClientModInitializer {
                 ConfigData.getInstance().didInfoShowOnce = true;
                 saveConfig();
                 Text text = Text.empty()
-                        .append(Text.literal("\uE109").setStyle(
-                                Style.EMPTY.withColor(Formatting.WHITE).withFont(Identifier.of("fish-helper", "icon"))
-                        ))
-                        .append(Text.literal(" Hi! Thanks for using MCCI Compact Fishing Messages!")
-                                .setStyle(Style.EMPTY.withColor(0xCAD0E8)))
-                        .append(Text.literal(" (This message will only show up once.) ")
-                                .setStyle(Style.EMPTY.withColor(0xD8D8D8).withItalic(true)))
-                        .append(Text.literal("\n All settings can be customized via Mod Menu. ")
-                                .setStyle(Style.EMPTY.withColor(0xA9BBC9).withBold(true)))
-                        .append(Text.literal("\n Although—what is it called—this mod did more than just " +
-                                        "compact messages, and will (hopefully) update more in the future... Enjoy!")
-                                .setStyle(Style.EMPTY.withColor(0xCAD0E8)));
+                    .append(Text.literal("\uE109").setStyle(
+                        Style.EMPTY.withColor(Formatting.WHITE).withFont(Identifier.of("fish-helper", "icon"))
+                    ))
+                    .append(Text.literal(" Hi! Thanks for using MCCI Compact Fishing Messages!")
+                        .setStyle(Style.EMPTY.withColor(0xCAD0E8)))
+                    .append(Text.literal(" (This message will only show up once.) ")
+                        .setStyle(Style.EMPTY.withColor(0xD8D8D8).withItalic(true)))
+                    .append(Text.literal("\n All settings can be customized via Mod Menu. ")
+                        .setStyle(Style.EMPTY.withColor(0xCAD0E8).withBold(true)))
+                    .append(Text.literal("\n Although—what is it called—this mod did more than just " +
+                                "compact messages, and will (hopefully) update more in the future... Enjoy!")
+                        .setStyle(Style.EMPTY.withColor(0xCAD0E8)));
 
                 client.player.sendMessage(text, false);
             }
