@@ -6,37 +6,31 @@ import net.minecraft.util.Formatting;
 import net.minecraft.util.Util;
 import starship.fishhelper.MCCIFishHelper;
 import starship.fishhelper.modMenu.ConfigData;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class TrevorOpener {
+    private static final Pattern RECIEVE_PATTERN = Pattern.compile(
+            ".*\\(\uE156\\) You receive: \\[(.+?)](?: x(\\d{1,3}(?:,\\d{3})*))?\\s*$"
+    );
+    public static EventState eventState = EventState.INACTIVE; // only 1 event
+    public static boolean ifTreasureOnClick = false;
+    public static boolean ifTreasureRlyOpened = false;
+    public static boolean ifReceivedMsgAfterOpen = false;
     private static TrevorOpener instance;
     private static MinecraftClient client;
-
     public final Treasure treasure;
     private final Lure lure;
     private final Tech tech;
     private final BaitLine baitLine;
     private final Augment augment;
     private final Cosmetic cosmetic;
-
-    private static final Pattern RECIEVE_PATTERN = Pattern.compile(
-            ".*\\(\uE156\\) You receive: \\[(.+?)](?: x(\\d{1,3}(?:,\\d{3})*))?\\s*$"
-    );
-    public enum EventState {
-        ACTIVE, INACTIVE
-    }
-
-    public static EventState eventState = EventState.INACTIVE; // only 1 event
-    public static boolean ifTreasureOnClick = false;
-    public static boolean ifTreasureRlyOpened = false;
     public long treasureMenuOpenedTime = 0;
     public long treasureMenuClosedTime = 0;
-    public static boolean ifReceivedMsgAfterOpen = false;
     public boolean ifSUMMAEYScreenOpened = false;
     public String pendingTreasureName = "";
     public int pendingTreasureCount = 0;
-
     public TrevorOpener(MCCIFishHelper mccifishhelper) {
         instance = this;
         this.treasure = new Treasure();
@@ -56,7 +50,7 @@ public class TrevorOpener {
     public void tick(MinecraftClient client) {
         if (client != null && client.player != null && client.world != null) {
             TrevorOpener.client = client;
-            if (!ifTreasureOnClick && treasureMenuClosedTime!= 0
+            if (!ifTreasureOnClick && treasureMenuClosedTime != 0
                     && (Util.getMeasuringTimeMs() - treasureMenuClosedTime) > 10 * 1000) { // its fine to set time long
                 ifReceivedMsgAfterOpen = false;
             }
@@ -89,20 +83,15 @@ public class TrevorOpener {
 
         if (baitLine.namePattern.matcher(name).find()) {
             baitLine.record(name, count);
-        }
-        else if (augment.namePattern.matcher(name).find()) {
+        } else if (augment.namePattern.matcher(name).find()) {
             augment.record(name, count);
-        }
-        else if (tech.namePattern.matcher(name).find()) {
+        } else if (tech.namePattern.matcher(name).find()) {
             tech.record(name, count);
-        }
-        else if (lure.namePattern.matcher(name).find()) {
+        } else if (lure.namePattern.matcher(name).find()) {
             lure.record(name, count);
-        }
-        else if (cosmetic.namePattern.matcher(name).find()) {
+        } else if (cosmetic.namePattern.matcher(name).find()) {
             cosmetic.record(name, count);
-        }
-        else
+        } else
             return false;
         return !ConfigData.getInstance().enableTreasureReciMsg;
     }
@@ -115,8 +104,7 @@ public class TrevorOpener {
 
             this.resetEvent();
             eventState = EventState.ACTIVE;
-        }
-        else {
+        } else {
             client.player.sendMessage(Text.literal("You already have an active event!")
                     .formatted(Formatting.DARK_RED).formatted(Formatting.BOLD), false);
         }
@@ -128,17 +116,14 @@ public class TrevorOpener {
         if (eventState == EventState.INACTIVE) {
             client.player.sendMessage(Text.literal("There is no active event to stop!")
                     .formatted(Formatting.DARK_RED).formatted(Formatting.BOLD), false);
-        }
-        else {
+        } else {
 //            client.player.sendMessage(Text.literal("Treasure Open event ended.")
 //                    .formatted(Formatting.DARK_GREEN).formatted(Formatting.BOLD), false);
 
             if (treasure.summary().getString().isBlank()) {
                 client.player.sendMessage(Text.literal("You have opened Nothing!")
                         .formatted(Formatting.BOLD).formatted(Formatting.DARK_RED), false);
-                return;
-            }
-            else {
+            } else {
                 eventState = EventState.INACTIVE;
                 client.player.sendMessage(Text.literal("You have opened: ")
                         .formatted(Formatting.BOLD).formatted(Formatting.DARK_GREEN), false);
@@ -192,7 +177,8 @@ public class TrevorOpener {
     }
 
     public void detectScreenINFINIBAG() {
-        if (client == null || client.world == null || client.player == null) return;
+        if (client == null || client.world == null || client.player == null) {
+        }
 //        client.player.sendMessage(Text.of("title is: "+ title), false);
 //        ifTreasureOnClick = false; // could be somewhere else
 //        ifTreasureRlyOpened = false;
@@ -216,7 +202,7 @@ public class TrevorOpener {
         }
     }
 
-    public void detectScreenSUMMARYClose () {
+    public void detectScreenSUMMARYClose() {
         if (client == null || client.world == null || client.player == null) return;
         if (ifTreasureOnClick && ifTreasureRlyOpened) {
             ifSUMMAEYScreenOpened = false;
@@ -225,5 +211,9 @@ public class TrevorOpener {
             ifTreasureOnClick = false;
 
         }
+    }
+
+    public enum EventState {
+        ACTIVE, INACTIVE
     }
 }

@@ -7,6 +7,7 @@ import org.spongepowered.asm.mixin.gen.Accessor;
 import org.spongepowered.asm.mixin.gen.Invoker;
 
 import java.util.List;
+
 @Mixin(value = ChatHud.class, priority = 100)
 public interface MixinChatHudAccessor {
     @Accessor("messages")

@@ -9,14 +9,19 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 public class ConfigData {
-    public boolean enableCompactFishmsg = true;
-    public boolean enableTreasureReciMsg = false;
-
-
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
     private static final File CONFIG_FILE = new File("config/fishhelper.json");
-
     private static ConfigData instance = new ConfigData();
+    public boolean enableCompactFishmsg = true;
+    public boolean enableTreasureReciMsg = false;
+    public boolean enableFishRecordOverlay = true;
+    public int fishRecordRenderTextX = 10;
+    public int fishRecordRenderTextY = 10;
+    public float fishRecordRenderScale = 1;
+    public int fishRecordBackgroundAlphaColor = 0x88;
+    public int fishRecordTextRGBColor = 0xFFFFFF;
+    public boolean fishRecordIconShows = true;
+    public boolean didInfoShowOnce = false;
 
     public static ConfigData getInstance() {
         return instance;
@@ -54,5 +59,15 @@ public class ConfigData {
     public void updateFrom(ConfigData newData) {
         this.enableCompactFishmsg = newData.enableCompactFishmsg;
         this.enableTreasureReciMsg = newData.enableTreasureReciMsg;
+
+        this.enableFishRecordOverlay = newData.enableFishRecordOverlay;
+        this.fishRecordRenderTextX = newData.fishRecordRenderTextX;
+        this.fishRecordRenderTextY = newData.fishRecordRenderTextY;
+        this.fishRecordRenderScale = newData.fishRecordRenderScale;
+        this.fishRecordBackgroundAlphaColor = newData.fishRecordBackgroundAlphaColor;
+        this.fishRecordTextRGBColor = newData.fishRecordTextRGBColor;
+        this.fishRecordIconShows = newData.fishRecordIconShows;
+
+        this.didInfoShowOnce = newData.didInfoShowOnce;
     }
 }
