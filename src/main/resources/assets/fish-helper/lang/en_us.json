@@ -1,6 +1,6 @@
 {
-  "key.fishhelper.open_config": "Open FishHelper Config",
-  "category.fishhelper": "FishHelper",
+  "key.fishhelper.open_config": "Open Config Menu",
+  "category.fishhelper": "Compact Fishing Messages",
   "title.fishhelper.config": "MCCI Compact Fishing Messages Settings",
   "option.fishhelper.compact_fishmsg": "Enable Compact Fishing Message",
   "option.fishhelper.trevor_opener": "Enable Receiving Treasure Messages",
