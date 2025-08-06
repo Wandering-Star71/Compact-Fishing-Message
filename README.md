@@ -1,17 +1,11 @@
-More compact fishing messages for Minecraft server MCC Island.
-## Feature:
-### Fish Caught Messages:
-- Removes all trigger text and XP message, retains the icon after the caught message.
-- Assigns unique icons to different categories of fishing items, differs normal fish and elusive fish.
-- Compatible with chat tools such as Chat Patches.
-### Treasure Opening Messages:
-- Disable default receive messages(Optional) and replace them with a concise unboxing summary.
-- Usage: Start recording unboxing events with the command ```\TreasureOpenEvent creat```, after completing unboxing use ```\TreasureOpenEvent stop``` to generate summary.
+Current version is 1.3.0
 
+View releases and feature introduction [here](https://modrinth.com/mod/mcci-compact-fishing-message).
 
-## Other:
-- The mod's options can be adjusted in the configuration panel provided by ModMenu.
-- The names of elusive fish are manually typed. If I’ve missed any, please also let me know.
+Submit bugs/suggestions [here](https://github.com/Wandering-Star71/MCCI-Compact-Fishing-Message/issues).
 
-If you encounter any bugs with this mod or have suggestions, please let me know by submitting issue.
+Check branches for each supported version(1.21.*).
 
+Star this project for mythic gargantuan fish.
+
+Special thanks to _Caike_CN_ and _Geometry__ for helping testing.
