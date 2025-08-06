@@ -13,6 +13,7 @@ public class FishSession {
     public int lootCount = 1;
     public MutableText caughtMessage = null;
     public int xpGained = 0;
+    public final List<String> triggers = new ArrayList<>();
 
     public boolean isActive = false;
     public boolean isLast = false;
@@ -32,6 +33,7 @@ public class FishSession {
         isLast = false;
         catchTime = 0;
         catType = null;
+        triggers.clear();
     }
 
     public FontFactory.CategoryType extraCategoryFromName(String name) {

@@ -27,7 +27,7 @@ public class RecordOverlay {
             "TROPICAL OVERGROWTH", "CORAL SHORES", "TWISTED SWAMP", "MIRRORED OASIS",
             "ANCIENT SANDS", "BLAZING CANYON", "ASHEN WASTES", "VOLCANIC SPRINGS");
     private static MinecraftClient client;
-    private boolean ifInFishingIsland = false;
+    public boolean ifInFishingIsland = false;
     private int tickCounter = 0;
     private int linboTickCounter = 0;
 
@@ -51,6 +51,7 @@ public class RecordOverlay {
     public void render(DrawContext drawContext) {
         if (client == null || client.options == null || client.player == null || client.world == null) return;
         if (!ConfigData.getInstance().enableFishRecordOverlay) return;
+        if (!ConfigData.getInstance().fishRecordOverlayAlwaysShows && !ifInFishingIsland) return;
 
         int x = ConfigData.getInstance().fishRecordRenderTextX;
         int y = ConfigData.getInstance().fishRecordRenderTextY;
@@ -123,28 +124,29 @@ public class RecordOverlay {
                     String islandName = matcher.group(1);
                     ifInFishingIsland = ISLAND_NAMES.contains(islandName);
                 } else {
-                    if (linboTickCounter >= 20 * 30) {
+                    if (linboTickCounter >= 20 * 3) {
                         ifInFishingIsland = false;
-                    } else
+                    }
+                    else
                         linboTickCounter++;
                 }
-            } else {
-                if (linboTickCounter >= 20 * 30) {
+            }
+            else {
+                if (linboTickCounter >= 20 * 3) {
                     ifInFishingIsland = false;
-                } else
+                    linboTickCounter = 0;
+                }
+                else
                     linboTickCounter++;
             }
 
             if (ifInFishingIsland) {
-                linboTickCounter = 0;
                 tickCounter++;
                 if (tickCounter >= 1200) {
                     fishingTime++;
                     tickCounter = 0;
                 }
             }
-//            else
-//                tickCounter = 0;
 
         }
     }

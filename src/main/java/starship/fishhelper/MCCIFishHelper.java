@@ -18,6 +18,7 @@ import net.minecraft.util.Identifier;
 import org.lwjgl.glfw.GLFW;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import starship.fishhelper.augmentTracker.AugmentTracker;
 import starship.fishhelper.fishMessage.FishMessage;
 import starship.fishhelper.modMenu.ConfigData;
 import starship.fishhelper.modMenu.ConfigScreen;
@@ -30,6 +31,7 @@ public class MCCIFishHelper implements ClientModInitializer {
     public static KeyBinding openConfigKeybind;
     private FishMessage fishmessage;
     private TrevorOpener trevoropener;
+    private AugmentTracker augmenttracker;
 
     private final GenericContainerScreen pendingScreen = null;
     private final int delayTicks = 0;
@@ -45,6 +47,7 @@ public class MCCIFishHelper implements ClientModInitializer {
         this.loadConfig();
         this.fishmessage = new FishMessage(this);
         this.trevoropener = new TrevorOpener(this);
+        this.augmenttracker = new AugmentTracker(this);
 
         ClientTickEvents.END_CLIENT_TICK.register(this::tick);
         openConfigKeybind = KeyBindingHelper.registerKeyBinding(new KeyBinding(
@@ -64,23 +67,23 @@ public class MCCIFishHelper implements ClientModInitializer {
         ScreenEvents.AFTER_INIT.register((client, screen, scaledWidth, scaledHeight) -> {
             if (screen instanceof GenericContainerScreen containerScreen) {
                 String title = containerScreen.getTitle().getString();
-//                MCCIFishHelper.logger.info("title is: {}", title);
                 if (title.contains("INFINIBAG")) {
                     this.trevoropener.detectScreenINFINIBAG();
-//                    pendingScreen = containerScreen;
-//                    delayTicks = 2;
                     return;
                 }
 
                 if (title.contains("SUMMARY")) {
                     this.trevoropener.detectScreenSUMMARYOpen();
                     ScreenEvents.remove(screen).register((screen1) -> {
-//                        MCCIFishHelper.logger.info("GUI closed: {}", title);
                         this.trevoropener.detectScreenSUMMARYClose();
                     });
                 }
-//                pendingScreen = null;
-//                delayTicks = 0;
+
+                if (title.contains("FISHING SUPPLIES")) {
+                    ScreenEvents.remove(screen).register((screen1) -> {
+                        this.augmenttracker.detectScreenFishSupplyClose(screen1);
+                    });
+                }
             }
         });
 
@@ -100,6 +103,9 @@ public class MCCIFishHelper implements ClientModInitializer {
 
         HudRenderCallback.EVENT.register((drawContext, tickCounter) -> {
             this.fishmessage.recordOverlay.render(drawContext);
+        });
+        HudRenderCallback.EVENT.register((drawContext, tickCounter) -> {
+            this.augmenttracker.render(drawContext);
         });
 
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
@@ -127,26 +133,7 @@ public class MCCIFishHelper implements ClientModInitializer {
     public void tick(MinecraftClient client) {
         this.fishmessage.tick(client);
         this.trevoropener.tick(client);
-//		this.augmentTracker.tick(client);
-//        if (pendingScreen != null && delayTicks > 0) {
-//            delayTicks--;
-//			return;
-//        }
-//        if (pendingScreen != null) {
-//            GenericContainerScreenHandler handler = pendingScreen.getScreenHandler();
-//            String title = pendingScreen.getTitle().getString();
-//
-//			List<Slot> slots = handler.slots;
-//			for (int i = 0; i < slots.size(); i++) {
-//				Slot slot = slots.get(i);
-//				ItemStack stack = slot.getStack();
-//				if (stack.getName().getString().contains("Air"))
-//					continue;
-//				MCCIFishHelper.logger.info("Slot {}: {} ×{}", i, stack.getName().getString(), stack.getCount());
-//			}
-//
-//            pendingScreen = null;
-//        }
+        this.augmenttracker.tick(client);
 
     }
 

@@ -21,7 +21,9 @@ public class ConfigData {
     public int fishRecordBackgroundAlphaColor = 0x88;
     public int fishRecordTextRGBColor = 0xFFFFFF;
     public boolean fishRecordIconShows = true;
+    public boolean fishRecordOverlayAlwaysShows = false;
     public boolean didInfoShowOnce = false;
+    public boolean enableAugmentOverlay = true;
 
     public static ConfigData getInstance() {
         return instance;
@@ -62,6 +64,9 @@ public class ConfigData {
         this.fishRecordBackgroundAlphaColor = newData.fishRecordBackgroundAlphaColor;
         this.fishRecordTextRGBColor = newData.fishRecordTextRGBColor;
         this.fishRecordIconShows = newData.fishRecordIconShows;
+        this.fishRecordOverlayAlwaysShows = newData.fishRecordOverlayAlwaysShows;
+
+        this.enableAugmentOverlay = newData.enableAugmentOverlay;
 
         this.didInfoShowOnce = newData.didInfoShowOnce;
     }

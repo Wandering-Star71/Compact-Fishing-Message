@@ -2,7 +2,7 @@
 	"schemaVersion": 1,
 	"id": "compact-fishmsg",
 	"version": "${version}",
-	"name": "MCCI Compact FishMsg",
+	"name": "MCCI Compact Fishing Messages",
 	"description": "More compact fishing messages for server MCC Island!",
 	"authors": [
 		"Wandering_Star71"
