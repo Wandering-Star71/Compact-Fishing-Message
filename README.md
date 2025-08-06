@@ -4,7 +4,7 @@ View releases and feature introduction [here](https://modrinth.com/mod/mcci-comp
 
 Submit bugs/suggestions [here](https://github.com/Wandering-Star71/MCCI-Compact-Fishing-Message/issues).
 
-Check branches for each supported version(1.21.*).
+Check code branches of supported version(1.21.*).
 
 Star this project for mythic gargantuan fish.
 
