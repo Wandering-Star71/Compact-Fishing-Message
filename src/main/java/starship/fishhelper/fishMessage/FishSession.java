@@ -1,10 +1,11 @@
 package starship.fishhelper.fishMessage;
 
+import net.minecraft.text.MutableText;
+import net.minecraft.text.Text;
+import starship.fishhelper.itemCategory.*;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import net.minecraft.text.*;
-import starship.fishhelper.itemCategory.*;
 
 public class FishSession {
     public final List<Text> triggerIcons = new ArrayList<>();
@@ -12,6 +13,7 @@ public class FishSession {
     public int lootCount = 1;
     public MutableText caughtMessage = null;
     public int xpGained = 0;
+    public final List<String> triggers = new ArrayList<>();
 
     public boolean isActive = false;
     public boolean isLast = false;
@@ -31,6 +33,7 @@ public class FishSession {
         isLast = false;
         catchTime = 0;
         catType = null;
+        triggers.clear();
     }
 
     public FontFactory.CategoryType extraCategoryFromName(String name) {

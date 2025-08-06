@@ -31,6 +31,7 @@ public class TrevorOpener {
     public boolean ifSUMMAEYScreenOpened = false;
     public String pendingTreasureName = "";
     public int pendingTreasureCount = 0;
+
     public TrevorOpener(MCCIFishHelper mccifishhelper) {
         instance = this;
         this.treasure = new Treasure();
@@ -40,7 +41,7 @@ public class TrevorOpener {
         this.augment = new Augment();
         this.cosmetic = new Cosmetic();
 
-        MCCIFishHelper.logger.info("TrevorOpener Initialized");
+//        MCCIFishHelper.logger.info("TrevorOpener Initialized");
     }
 
     public static TrevorOpener getInstance() {

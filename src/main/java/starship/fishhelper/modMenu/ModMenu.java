@@ -2,7 +2,6 @@ package starship.fishhelper.modMenu;
 
 import com.terraformersmc.modmenu.api.ConfigScreenFactory;
 import com.terraformersmc.modmenu.api.ModMenuApi;
-
 import starship.fishhelper.MCCIFishHelper;
 
 public class ModMenu implements ModMenuApi {
@@ -10,4 +9,5 @@ public class ModMenu implements ModMenuApi {
     public ConfigScreenFactory<?> getModConfigScreenFactory() {
         return parent -> ConfigScreen.buildScreen(MCCIFishHelper.getInstance(), parent);
     }
+    // TODO: add open config file button
 }
