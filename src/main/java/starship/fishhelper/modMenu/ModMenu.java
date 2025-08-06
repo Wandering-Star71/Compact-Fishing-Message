@@ -9,4 +9,5 @@ public class ModMenu implements ModMenuApi {
     public ConfigScreenFactory<?> getModConfigScreenFactory() {
         return parent -> ConfigScreen.buildScreen(MCCIFishHelper.getInstance(), parent);
     }
+    // TODO: add open config file button
 }

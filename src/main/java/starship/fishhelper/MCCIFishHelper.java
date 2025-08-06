@@ -19,6 +19,7 @@ import net.minecraft.util.Identifier;
 import org.lwjgl.glfw.GLFW;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import starship.fishhelper.augmentTracker.AugmentTracker;
 import starship.fishhelper.fishMessage.FishMessage;
 import starship.fishhelper.modMenu.ConfigData;
 import starship.fishhelper.modMenu.ConfigScreen;
@@ -31,9 +32,7 @@ public class MCCIFishHelper implements ClientModInitializer {
     public static KeyBinding openConfigKeybind;
     private FishMessage fishmessage;
     private TrevorOpener trevoropener;
-
-    private final GenericContainerScreen pendingScreen = null;
-    private final int delayTicks = 0;
+    private AugmentTracker augmenttracker;
 
     public static MCCIFishHelper getInstance() {
         return instance;
@@ -46,13 +45,14 @@ public class MCCIFishHelper implements ClientModInitializer {
         this.loadConfig();
         this.fishmessage = new FishMessage(this);
         this.trevoropener = new TrevorOpener(this);
+        this.augmenttracker = new AugmentTracker(this);
 
         ClientTickEvents.END_CLIENT_TICK.register(this::tick);
         openConfigKeybind = KeyBindingHelper.registerKeyBinding(new KeyBinding(
-                "key.fishhelper.open_config",
-                InputUtil.Type.KEYSYM,
-                GLFW.GLFW_KEY_K,
-                "category.fishhelper"
+            "key.fishhelper.open_config",
+            InputUtil.Type.KEYSYM,
+            GLFW.GLFW_KEY_K,
+            "category.fishhelper"
         ));
 
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
@@ -65,11 +65,8 @@ public class MCCIFishHelper implements ClientModInitializer {
         ScreenEvents.AFTER_INIT.register((client, screen, scaledWidth, scaledHeight) -> {
             if (screen instanceof GenericContainerScreen containerScreen) {
                 String title = containerScreen.getTitle().getString();
-//                MCCIFishHelper.logger.info("title is: {}", title);
                 if (title.contains("INFINIBAG")) {
                     this.trevoropener.detectScreenINFINIBAG();
-//                    pendingScreen = containerScreen;
-//                    delayTicks = 2;
                     return;
                 }
 
@@ -80,31 +77,42 @@ public class MCCIFishHelper implements ClientModInitializer {
                         this.trevoropener.detectScreenSUMMARYClose();
                     });
                 }
-//                pendingScreen = null;
-//                delayTicks = 0;
+
+                if (title.contains("FISHING SUPPLIES")) {
+                    ScreenEvents.remove(screen).register((screen1) -> {
+                        this.augmenttracker.detectScreenFishSupplyClose(screen1);
+                    });
+                }
             }
         });
 
         ClientCommandRegistrationCallback.EVENT.register((dispatcher, registryAccess) -> {
             dispatcher.register(
-                    ClientCommandManager.literal("TreasureOpenEvent")
-                            .then(ClientCommandManager.literal("create").executes(context -> {
-                                this.trevoropener.eventStart();
-                                return 0;
-                            }))
-                            .then(ClientCommandManager.literal("stop").executes(context -> {
-                                this.trevoropener.eventEnd();
-                                return 0;
-                            }))
+                ClientCommandManager.literal("TreasureOpenEvent")
+                    .then(ClientCommandManager.literal("create").executes(context -> {
+                        this.trevoropener.eventStart();
+                        return 0;
+                    }))
+                    .then(ClientCommandManager.literal("stop").executes(context -> {
+                        this.trevoropener.eventEnd();
+                        return 0;
+                    }))
             );
         });
 
         HudLayerRegistrationCallback.EVENT.register(layeredDrawer -> {
             layeredDrawer.attachLayerAfter(
-                    IdentifiedLayer.MISC_OVERLAYS,
+                IdentifiedLayer.MISC_OVERLAYS,
+                Identifier.of("fish-helper", "fish-record-layer"),
+                (drawContext, tickCounter) -> {
+                    this.fishmessage.recordOverlay.render(drawContext);
+                }
+            );
+            layeredDrawer.attachLayerAfter(
                     Identifier.of("fish-helper", "fish-record-layer"),
+                    Identifier.of("fish-helper", "fish-augment-layer"),
                     (drawContext, tickCounter) -> {
-                        this.fishmessage.recordOverlay.render(drawContext);
+                        this.augmenttracker.render(drawContext);
                     }
             );
         });
@@ -114,17 +122,17 @@ public class MCCIFishHelper implements ClientModInitializer {
                 ConfigData.getInstance().didInfoShowOnce = true;
                 saveConfig();
                 Text text = Text.empty()
-                        .append(Text.literal("\uE109").setStyle(
-                                Style.EMPTY.withColor(Formatting.WHITE).withFont(Identifier.of("fish-helper", "icon"))
-                        ))
-                        .append(Text.literal(" Hi! Thanks for using MCCI Compact Fishing Messages!")
-                                .setStyle(Style.EMPTY.withColor(0xCAD0E8)))
-                        .append(Text.literal(" (This message will only show up once.) ")
-                                .setStyle(Style.EMPTY.withColor(0xD8D8D8).withItalic(true)))
-                        .append(Text.literal("All settings can be customized via Mod Menu or by pressing K ")
-                                .setStyle(Style.EMPTY.withColor(0xFFDCD1).withBold(true)))
-                        .append(Text.literal("Thanks for support again <3. I will (hopefully) update more in the future... Enjoy!")
-                                .setStyle(Style.EMPTY.withColor(0xCAD0E8)));
+                    .append(Text.literal("\uE109").setStyle(
+                        Style.EMPTY.withColor(Formatting.WHITE).withFont(Identifier.of("fish-helper", "icon"))
+                    ))
+                    .append(Text.literal(" Hi! Thanks for using MCCI Compact Fishing Messages!")
+                        .setStyle(Style.EMPTY.withColor(0xCAD0E8)))
+                    .append(Text.literal(" (This message will only show up once.) ")
+                        .setStyle(Style.EMPTY.withColor(0xD8D8D8).withItalic(true)))
+                    .append(Text.literal("All settings can be customized via Mod Menu or by pressing K ")
+                        .setStyle(Style.EMPTY.withColor(0xFFDCD1).withBold(true)))
+                    .append(Text.literal("Thanks for support again <3. I will (hopefully) update more in the future... Enjoy!")
+                        .setStyle(Style.EMPTY.withColor(0xCAD0E8)));
 
                 client.player.sendMessage(text, false);
             }
@@ -134,27 +142,7 @@ public class MCCIFishHelper implements ClientModInitializer {
     public void tick(MinecraftClient client) {
         this.fishmessage.tick(client);
         this.trevoropener.tick(client);
-//		this.augmentTracker.tick(client);
-//        if (pendingScreen != null && delayTicks > 0) {
-//            delayTicks--;
-//			return;
-//        }
-//        if (pendingScreen != null) {
-//            GenericContainerScreenHandler handler = pendingScreen.getScreenHandler();
-//            String title = pendingScreen.getTitle().getString();
-//
-//			List<Slot> slots = handler.slots;
-//			for (int i = 0; i < slots.size(); i++) {
-//				Slot slot = slots.get(i);
-//				ItemStack stack = slot.getStack();
-//				if (stack.getName().getString().contains("Air"))
-//					continue;
-//				MCCIFishHelper.logger.info("Slot {}: {} ×{}", i, stack.getName().getString(), stack.getCount());
-//			}
-//
-//            pendingScreen = null;
-//        }
-
+		this.augmenttracker.tick(client);
     }
 
     public void loadConfig() {

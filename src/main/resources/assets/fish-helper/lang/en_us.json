@@ -1,6 +1,6 @@
 {
-  "key.fishhelper.open_config": "Open FishHelper Config",
-  "category.fishhelper": "FishHelper",
+  "key.fishhelper.open_config": "Open Config Menu",
+  "category.fishhelper": "Compact Fishing Messages",
   "title.fishhelper.config": "MCCI Compact Fishing Messages Settings",
   "option.fishhelper.compact_fishmsg": "Enable Compact Fishing Message",
   "option.fishhelper.trevor_opener": "Enable Receiving Treasure Messages",
@@ -14,5 +14,8 @@
   "option.fishhelper.cute_icon": "Shows CUTE icons",
   "tooltip.fishhelper.compact_fishmsg": "When you catch something, whether shows more compact catching chat messages.",
   "tooltip.fishhelper.trevor_opener": "Whether receives chat messages when TreasureOpenEvent is active.",
-  "tooltip.fishhelper.record_overlay": "Whether shows fishing record panel in your screen."
+  "tooltip.fishhelper.record_overlay": "Whether shows fishing record panel in your screen.",
+  "option.fishhelper.always_shows": "Show Panel Without Being on Islands",
+  "option.fishhelper.augment_overlay": "Enable Equipments Overlay",
+  "tooltip.fishhelper.augment_overlay": "Whether shows equipped line&bait and switched overclocks"
 }
