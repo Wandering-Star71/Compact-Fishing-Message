@@ -2,7 +2,7 @@
 	"schemaVersion": 1,
 	"id": "compact-fishmsg",
 	"version": "${version}",
-	"name": "MCCI Compact FishMsg",
+	"name": "MCCI Compact Fishing Messages",
 	"description": "More compact fishing messages for server MCC Island!",
 	"authors": [
 		"Wandering_Star71"
@@ -25,7 +25,7 @@
 	],
 	"depends": {
 		"fabricloader": ">=0.16.10",
-		"minecraft": ">=1.21.6 <=1.21.8",
+		"minecraft": ">=1.21.6",
 		"java": ">=21",
 		"fabric-api": "*",
 		"cloth-config": "*"

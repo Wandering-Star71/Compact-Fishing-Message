@@ -12,8 +12,8 @@ public class ConfigData {
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
     private static final File CONFIG_FILE = new File("config/fishhelper.json");
     private static ConfigData instance = new ConfigData();
-    public boolean enableCompactFishmsg = true;
     public boolean enableTreasureReciMsg = false;
+    public boolean enableCompactFishmsg = true;
     public boolean enableFishRecordOverlay = true;
     public int fishRecordRenderTextX = 10;
     public int fishRecordRenderTextY = 10;
@@ -21,7 +21,9 @@ public class ConfigData {
     public int fishRecordBackgroundAlphaColor = 0x88;
     public int fishRecordTextRGBColor = 0xFFFFFF;
     public boolean fishRecordIconShows = true;
+    public boolean fishRecordOverlayAlwaysShows = false;
     public boolean didInfoShowOnce = false;
+    public boolean enableAugmentOverlay = true;
 
     public static ConfigData getInstance() {
         return instance;
@@ -29,16 +31,13 @@ public class ConfigData {
 
     public static void load() {
         if (!CONFIG_FILE.exists()) {
-//            System.out.println("[FishHelper] 配置文件不存在，使用默认值。");
-            save(); // 生成默认配置文件
+            save();
             return;
         }
 
         try (FileReader reader = new FileReader(CONFIG_FILE)) {
             instance = GSON.fromJson(reader, ConfigData.class);
-//            System.out.println("[FishHelper] 配置加载成功。");
-        } catch (IOException e) {
-//            System.err.println("[FishHelper] 配置加载失败：" + e.getMessage());
+        } catch (IOException ignored) {
         }
     }
 
@@ -49,16 +48,14 @@ public class ConfigData {
             }
             try (FileWriter writer = new FileWriter(CONFIG_FILE)) {
                 GSON.toJson(instance, writer);
-//                System.out.println("[FishHelper] 配置保存成功。");
             }
-        } catch (IOException e) {
-//            System.err.println("[FishHelper] 配置保存失败：" + e.getMessage());
+        } catch (IOException ignored) {
         }
     }
 
     public void updateFrom(ConfigData newData) {
-        this.enableCompactFishmsg = newData.enableCompactFishmsg;
         this.enableTreasureReciMsg = newData.enableTreasureReciMsg;
+        this.enableCompactFishmsg = newData.enableCompactFishmsg;
 
         this.enableFishRecordOverlay = newData.enableFishRecordOverlay;
         this.fishRecordRenderTextX = newData.fishRecordRenderTextX;
@@ -67,6 +64,9 @@ public class ConfigData {
         this.fishRecordBackgroundAlphaColor = newData.fishRecordBackgroundAlphaColor;
         this.fishRecordTextRGBColor = newData.fishRecordTextRGBColor;
         this.fishRecordIconShows = newData.fishRecordIconShows;
+        this.fishRecordOverlayAlwaysShows = newData.fishRecordOverlayAlwaysShows;
+
+        this.enableAugmentOverlay = newData.enableAugmentOverlay;
 
         this.didInfoShowOnce = newData.didInfoShowOnce;
     }

@@ -22,6 +22,7 @@ import org.slf4j.LoggerFactory;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.minecraft.client.MinecraftClient;
 
+import starship.fishhelper.augmentTracker.AugmentTracker;
 import starship.fishhelper.fishMessage.FishMessage;
 import starship.fishhelper.modMenu.ConfigData;
 import starship.fishhelper.modMenu.ConfigScreen;
@@ -34,6 +35,7 @@ public class MCCIFishHelper implements ClientModInitializer {
     public static KeyBinding openConfigKeybind;
     private FishMessage fishmessage;
     private TrevorOpener trevoropener;
+    private AugmentTracker augmenttracker;
 
     public static MCCIFishHelper getInstance() {
         return instance;
@@ -46,6 +48,7 @@ public class MCCIFishHelper implements ClientModInitializer {
         this.loadConfig();
         this.fishmessage = new FishMessage(this);
         this.trevoropener = new TrevorOpener(this);
+        this.augmenttracker = new AugmentTracker(this);
 
         ClientTickEvents.END_CLIENT_TICK.register(this::tick);
         openConfigKeybind = KeyBindingHelper.registerKeyBinding(new KeyBinding(
@@ -76,6 +79,12 @@ public class MCCIFishHelper implements ClientModInitializer {
                         this.trevoropener.detectScreenSUMMARYClose();
                     });
                 }
+
+                if (title.contains("FISHING SUPPLIES")) {
+                    ScreenEvents.remove(screen).register((screen1) -> {
+                        this.augmenttracker.detectScreenFishSupplyClose(screen1);
+                    });
+                }
             }
         });
 
@@ -98,6 +107,13 @@ public class MCCIFishHelper implements ClientModInitializer {
                 Identifier.of("fish-helper", "fish-record-layer"),
                 (drawContext, tickDelta) -> {
                     this.fishmessage.recordOverlay.render(drawContext);
+                }
+        );
+        HudElementRegistry.attachElementAfter(
+                Identifier.of("fish-helper", "fish-record-layer"),
+                Identifier.of("fish-helper", "fish-augment-layer"),
+                (drawContext, tickDelta) -> {
+                    this.augmenttracker.render(drawContext);
                 }
         );
 
@@ -128,6 +144,7 @@ public class MCCIFishHelper implements ClientModInitializer {
     public void tick(MinecraftClient client) {
         this.fishmessage.tick(client);
         this.trevoropener.tick(client);
+        this.augmenttracker.tick(client);
     }
 
     public void loadConfig() {

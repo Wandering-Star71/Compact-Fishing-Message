@@ -9,7 +9,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import starship.fishhelper.MCCIFishHelper;
+import starship.fishhelper.augmentTracker.AugmentTracker;
 import starship.fishhelper.trevorOpener.TrevorOpener;
 
 @Mixin(ScreenHandler.class)
@@ -24,18 +24,19 @@ public abstract class MixinScreenHandler {
                 Slot slot = ((ScreenHandler) (Object) this).getSlot(slotId);
                 ItemStack itemStack = slot.getStack();
                 if (itemStack.isEmpty()) return;
-                if (!TrevorOpener.getInstance().treasure.namePattern.matcher(itemStack.getName().getString()).find())
-                    return;
+                if (TrevorOpener.getInstance().treasure.namePattern.matcher(itemStack.getName().getString()).find()) {
+                    if (actionType == SlotActionType.QUICK_MOVE && button == 0) { // left+shift click
+                        TrevorOpener.getInstance().recordTreasure(itemStack.getName().getString(), itemStack.getCount());
+                    }
 
-                if (actionType == SlotActionType.QUICK_MOVE && button == 0) { // left+shift click
-//                    MCCIFishHelper.logger.info(">> Shift + Left Click detected on slot: {}, {}", itemStack.getName().getString(), itemStack.getCount());
-                    TrevorOpener.getInstance().recordTreasure(itemStack.getName().getString(), itemStack.getCount());
+                    if (actionType == SlotActionType.PICKUP && button == 0) { // left click
+                        TrevorOpener.getInstance().recordTreasure(itemStack.getName().getString(), 1);
+
+                    }
                 }
-
-                if (actionType == SlotActionType.PICKUP && button == 0) { // left click
-//                    MCCIFishHelper.logger.info(">> Left Click detected on slot: {}, {}", itemStack.getName().getString(), itemStack.getCount());
-                    TrevorOpener.getInstance().recordTreasure(itemStack.getName().getString(), 1);
-
+                if (itemStack.getName().getString().contains("Unstable Overclock")) {
+                    if (actionType == SlotActionType.QUICK_MOVE) // shift click (left and right all ok)
+                        AugmentTracker.getInstance().activateUnstableOC(itemStack);
                 }
             }
 
