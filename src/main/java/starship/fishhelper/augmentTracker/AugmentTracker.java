@@ -106,7 +106,7 @@ public class AugmentTracker {
             else if (lineUsageRemain == 0) {
                 matrices.set(backupMatrix);
 //                drawContext.drawItem(line, startLeftX + blankWidth, yPos);
-                Identifier plusID = Identifier.of("fish-helper", "textures/item/addf.png");
+                Identifier plusID = Identifier.of("fish-helper", "textures/item/add.png");
                 drawContext.drawTexture(RenderPipelines.GUI_TEXTURED, plusID, startLeftX + blankWidth, yPos, 0f, 0f, 16, 16, 16, 16);
 
             }
@@ -120,8 +120,8 @@ public class AugmentTracker {
             Matrix3x2fStack matrices = drawContext.getMatrices();
             Matrix3x2f backupMatrix = new Matrix3x2f(matrices);
 
-            int scaledX = (int)((startRightX + blankWidth * 3 + 5) * 2 - 5);
-            int scaledY = (int)((yPos - 2) * 2 + 40);
+            int scaledX = (int)((startRightX + blankWidth * 3 + 5) * 2 - 5)/2;
+            int scaledY = (int)((yPos - 2) * 2 + 40)/2;
             matrices.translate(scaledX, scaledY);
             matrices.scale(0.5f, 0.5f);
 
@@ -138,7 +138,7 @@ public class AugmentTracker {
                 int minutes = unstableOCCooldown / 60;
                 int seconds = unstableOCCooldown % 60;
                 String timeStr = String.format("%d:%02d", minutes, seconds);
-                drawContext.drawText(textRenderer, Text.literal(timeStr), scaledX, scaledY, 0xFFFFFFFF, true);
+                drawContext.drawText(textRenderer, Text.literal(timeStr), 0, 0, 0xFFFFFFFF, true);
                 matrices.set(backupMatrix);
 
 //                drawContext.drawItem(unstableOverclock, startRightX + blankWidth * 3, yPos);
