@@ -101,7 +101,7 @@ public class AugmentTracker {
             else if (lineUsageRemain == 0) {
                 drawContext.getMatrices().pop();
 //                drawContext.drawItem(line, startLeftX + blankWidth, yPos);
-                Identifier plusID = Identifier.of("fish-helper", "textures/item/addf.png");
+                Identifier plusID = Identifier.of("fish-helper", "textures/item/add.png");
                 Function<Identifier, RenderLayer> renderLayerFunc = id -> RenderLayer.getGuiTextured(plusID);
                 drawContext.drawTexture(renderLayerFunc, plusID, startLeftX + blankWidth, yPos, 0f, 0f, 16, 16, 16, 16);
 
